@@ -22,3 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/user-info/step1', 'UserInfoController@userInfoPage')->name('userInfoPage');
 
 Route::post('/user-info/step1', 'UserInfoController@saveUpdate')->name('userInfoSave');
+
+Route::get('/design', function() {
+    return view('layouts.design');
+});

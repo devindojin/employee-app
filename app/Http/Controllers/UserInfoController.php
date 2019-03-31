@@ -15,7 +15,10 @@ class UserInfoController extends Controller
 {
     public function userInfoPage () 
     {
-    	return view('userInfoPage.step1', ['data'=>"testing value"]);
+        $id = Auth::user()->id;
+        $userInfo = User::find($id);
+        
+    	return view('userInfoPage.step1', ['data'=>$userInfo]);
     }
 
     public function saveUpdate(UserInfoRequest $request)
@@ -26,6 +29,7 @@ class UserInfoController extends Controller
         
         $User->civility = $request->civility;
         $User->last_name = $request->last_name;
+        $User->name = $request->first_name;
         $User->birth_date = $request->birth_date;
         $User->code_postal = $request->code_postal;
         $User->city = $request->city;

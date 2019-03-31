@@ -24,7 +24,13 @@ class UserInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'civility'      => 'max:20',
+            'last_name'     => 'max:50',
+            'first_name'    => 'max:50',
+            'code_postal'   => 'max:10',
+            'city'          => 'max:25',
+            'telephone'     => 'max:12',
+            'annual_salary' => 'nullable|numeric'
         ];
     }
 }
