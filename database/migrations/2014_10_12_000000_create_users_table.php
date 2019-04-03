@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('civility')->nullable();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('file_name')->nullable();
             $table->timestamp('birth_date')->nullable();
@@ -39,13 +39,15 @@ class CreateUsersTable extends Migration
             $table->timestamp('lph_To')->nullable();
             $table->string('still_in_office')->nullable();
             $table->string('job_title')->nullable();
-            $table->string('function')->nullable();
+            $table->string('fonction')->nullable();
             $table->string('gross_annual_salary')->nullable();
             $table->string('assignments')->nullable();
             $table->string('level_of_education')->nullable();
             $table->string('training_type')->nullable();
-            $table->string('lang_1')->nullable();
-            $table->string('lang_2')->nullable();
+            $table->string('lang_11')->nullable();
+            $table->string('lang_12')->nullable();
+            $table->string('lang_21')->nullable();
+            $table->string('lang_22')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

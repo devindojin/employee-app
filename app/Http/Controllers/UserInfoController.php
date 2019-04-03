@@ -13,7 +13,13 @@ use App\Http\Requests\UserInfoRequest;
 
 class UserInfoController extends Controller
 {
-    public function userInfoPage () 
+
+    public function uploadCv () 
+    {
+        return view('userInfoPage.uploadCv');
+    }
+
+    public function step1 () 
     {
         $id = Auth::user()->id;
         $userInfo = User::find($id);
@@ -21,7 +27,7 @@ class UserInfoController extends Controller
     	return view('userInfoPage.step1', ['data'=>$userInfo]);
     }
 
-    public function saveUpdate(UserInfoRequest $request)
+    public function step1Update(UserInfoRequest $request)
     {
         $id = Auth::user()->id;
         
@@ -45,6 +51,41 @@ class UserInfoController extends Controller
 
         $User->save();
 
-        // return redirect('administrator/body-parts')->with('status', "User info updated successfully");
+        return redirect()->route('step2')->with('status', "User info updated successfully");
+    }
+
+    public function step2 () 
+    {
+        $id = Auth::user()->id;
+        $userInfo = User::find($id);
+        
+        return view('userInfoPage.step2', ['data'=>$userInfo]);
+    }
+
+    public function step2Update (Request $request)
+    {
+        $id = Auth::user()->id;
+        
+        $User = User::findorFail($id);
+
+        $lph_from = $request->lph_From_yr."-".$request->lph_From_mo."-01";
+        $lph_to = $request->lph_To_yr."-".$request->lph_To_mo."-01";
+
+        $User->experience = $request->experience;
+        $User->lph_From = $lph_from;
+        $User->lph_To = $lph_to;
+        $User->still_in_office = $request->still_in_office;
+        $User->job_title = $request->job_title;
+        $User->fonction = $request->fonction;
+        $User->gross_annual_salary = $request->gross_annual_salary;
+        $User->assignments = $request->assignments;
+        $User->level_of_education = $request->level_of_education;
+        $User->training_type = $request->training_type;
+        $User->lang_11 = $request->lang_11;
+        $User->lang_12 = $request->lang_12;
+        $User->lang_21 = $request->lang_21;
+        $User->lang_22 = $request->lang_22;
+
+        $User->save();
     }
 }

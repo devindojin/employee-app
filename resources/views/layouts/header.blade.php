@@ -15,18 +15,18 @@
 
 		<div class="user_block">
 			<div class="user_detail">
-				<h2 class="user_name">sachin sahrma</h2>
+				<h2 class="user_name">@if(Auth::check()) {{Auth::user()->name.' '.Auth::user()->last_name }} @else @endif</h2>
 				<img src="{{ asset('images/avatar.jpg') }}" class="user_pic" />
-				<h3 class="user_email">sacihn768@gmail.com</h3>
+				<h3 class="user_email">@if(Auth::check()) {{Auth::user()->email }} @else @endif</h3>
 			</div>
 		</div>
 		<ul class="menu_list list-unstyled">
-			<li><a href="#">Menu Item one</a></li>
-			<li><a href="#">Menu Item one</a></li>
-			<li><a href="#">Menu Item one</a></li>
-			<li><a href="#">Menu Item one</a></li>
-			<li><a href="#">Menu Item one</a></li>
-			<li><a href="#">Menu Item one</a></li>
+			<li><a href="#">Mon CV</a></li>
+			<li><a href="#">Mes alertes mail</a></li>
+			<li><a href="#">Mes offres</a></li>
+			<li><a href="#">Mes cadidatures</a></li>
+			<li><a href="#">Mon compte</a></li>
+			<li><a href="#">Deconnexion</a></li>
 		</ul>
 	</div>
 </nav>

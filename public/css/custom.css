@@ -37,12 +37,23 @@ p.default_text {
     margin: 20px 0;
 }
   .top_bar {
+       height: 60px;
+    padding: 0 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+	    margin-bottom: 10px;
 }
 .classic{
     -webkit-appearance: none;
+}
+.top_bar_right .user_pic {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+.navbar-brand {
+    padding-left: 0;
 }
 select.classic {
     background-image: linear-gradient(45deg, transparent 50%,#363636 50%), linear-gradient(135deg, #363636 50%, transparent 50%), linear-gradient(to right, rgba(135, 206, 235, 0), rgba(135, 206, 235, 0));
@@ -140,6 +151,83 @@ select.classic {
     font-size: 18px;
     font-weight: 400;
 }
+
+
+  .button-group-pills .btn {
+     line-height: 32px;
+  }
+  .button-group-pills .btn.active {
+    border-color: #363636;
+    background-color: #363636;
+    color: #FFF;
+  }
+  .button-group-pills .btn:hover {
+    border-color: #363636;
+    background-color: #363636;
+    color: #FFF;
+  }
+ .button-group-pills.text-center:focus {
+    outline: 0;
+}
+  
+  #dropzone {
+      position: relative;
+}
+#dropzone.dragover {
+  border: 2px dashed #000;
+  color: #ccc;
+}
+#dropzone.dropped {
+  border: 2px dashed #1ABC9C;
+  color:#1ABC9C;
+}
+
+#dropzone div { 
+  text-align:center;
+}
+#dropzone div div{
+   display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px !important;
+    margin-bottom: 5px;
+}
+#dropzone [type="file"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index:0;
+  width:100%;
+  text-align:center;
+}
+ 
+#dropzone .img{
+   display:none;
+}
+.fileerr{
+  color:#D24D57;
+  float:clear;
+  text-align:center;
+}
+.fileok,.filesize{
+  text-align:center;
+  line-height:15px !important;
+  color:#3B7E87;
+  font-size:16px !important;
+  word-break:break-all;
+  color:#3B7E87;
+}
+.filesize{
+    font-size:14px !important;
+    color: #1F3A93;
+}
+
+  
  /****side menu********/
  
  .sidenav {
@@ -233,26 +321,6 @@ select.classic {
     padding: 10px 0;
     display: block;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  .custom_main_container {
        padding: 15px;
     width: 100%;
@@ -261,6 +329,94 @@ select.classic {
  .no_margin {
      margin: 0;
  }
+ 
+ 
+ /**********Login Page********************/
+ .form-signin {
+     max-width: 320px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 0;
+	text-align:center;
+	    width: 100%;
+}
+
+.dropzone svg {
+    width: 25px;
+    margin: 0px 0;
+}
+p.notes {
+    margin: 0;
+    background: #777;
+    color: #fff;
+    padding: 10px 15px;
+    font-weight: 400;
+}
+
+.form-signin .title {
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+.login_wrapper {
+    display: flex;
+    min-height: 400px;
+    align-items: center;
+}
+.login_input_block {
+    padding: 0 20px;
+}
+.form-signin .btn.btn-lg.btn-default {
+        background: #435f52;
+    color: #fff;
+    border-radius: 0;
+    max-width: 350px;
+    min-width: 150px;
+    margin: auto;
+    border-radius: 15px;
+    width: 100%;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 30px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+  margin-top: 0;
+}
+.form-signin .form-control {
+    position: relative;
+    font-size: 16px;
+    height: 45px;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 2px solid #363636;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+      box-shadow: none
+}
+.form-signin input{
+	margin-bottom: 15px;
+}
+.form-signin .checkbox input[type=checkbox]{
+        margin-left: 0px;
+    position: relative;
+    margin-bottom: 0;
+}
+.other_option {
+    justify-content: space-between;
+}
+
+ /**********Login Page********************/
+ 
+ 
+ 
+ 
+ 
+
  /*********RESPONSIVE LAYOUT **************/
  
  @media(max-width: 768px) {
