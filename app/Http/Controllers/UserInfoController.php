@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repositories\Traits\FileUploadsTrait;
+use App\Repositories\Traits\FileDeletesTrait;
 
 use DB;
 use App\User;
@@ -13,10 +15,32 @@ use App\Http\Requests\UserInfoRequest;
 
 class UserInfoController extends Controller
 {
+    use FileUploadsTrait;
+    use FileDeletesTrait;
 
     public function uploadCv () 
     {
         return view('userInfoPage.uploadCv');
+    }
+
+    public function saveCv (Request $request)
+    {
+        $request->validate([
+            'uploadCv' => 'required|file|max:1024|mimes:doc,docx,pdf',
+        ]);
+
+        $fileInfo = $this->uploadFile($request,"uploadCv");
+        
+        $id = Auth::user()->id;
+        
+        $User = User::findorFail($id);
+
+        $User->file_name = $fileInfo;
+
+        $User->save();
+
+        return redirect()->route('step1');
+
     }
 
     public function step1 () 

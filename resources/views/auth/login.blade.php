@@ -37,7 +37,7 @@
                 Je me connecte
             </button>
             <h4 class="title">vous êtes nouveau?<br>Accêdez a tous nos services</h4>
-            <a href="" class="btn btn-lg btn-default">Je m'inscris</a>
+            <a href="{{ route('register') }}" class="btn btn-lg btn-default">Je m'inscris</a>
         </form>
     </div>
 </div>

@@ -413,8 +413,63 @@ p.notes {
  /**********Login Page********************/
  
  
+ /**********Moncv Page********************/
+
+.moncv-border {
+  border: 1px solid #cccccc;
+}
+
+.moncv-subheading, .moncv-subheading a {
+  font-weight: 800;
+  color: #177f0a;
+}
+
+
+ /**********Moncv Page********************/
  
+
+ /*job search section*/
  
+ .search-no {
+  padding: 20px;
+  background-color: #eee;
+  text-align: left;
+  color: #999;
+ }
+.job-search-section {
+  background-color: #eee;
+}
+
+.jss-sub-section {
+  background-color: #FFF;
+  margin: 18px 0px;
+}
+ .job-search-section div h5 {
+    font-weight: 800;
+    text-align: left;
+ }
+
+ .job-search-section div h6 {
+    font-weight: 700;
+    text-align: left;
+ }
+
+ .job-search-section .form-control {
+    position: relative;
+    font-size: 16px;
+    height: 45px;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 2px solid #363636;
+  }
+.jss-section3 a{
+  color: #999;
+  padding: 0px 10px;
+}
+ /*job search section*/
  
 
  /*********RESPONSIVE LAYOUT **************/

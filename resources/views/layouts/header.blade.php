@@ -8,6 +8,7 @@
 		<h2 class="no_margin page_title">emploi paysagiste</h2>  
 	</div>
 	<div class="top_bar_right">
+    	<img src="{{ asset('images/avatar.jpg') }}" class="user_pic">
 	</div>
 
 	<div id="sideNav" class="sidenav scrollbar">
@@ -26,7 +27,20 @@
 			<li><a href="#">Mes offres</a></li>
 			<li><a href="#">Mes cadidatures</a></li>
 			<li><a href="#">Mon compte</a></li>
-			<li><a href="#">Deconnexion</a></li>
+			@guest
+			@else
+			<li>
+				<a href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                    Deconnexion
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+			</li>
+			@endguest
 		</ul>
 	</div>
 </nav>

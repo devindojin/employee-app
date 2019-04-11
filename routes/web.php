@@ -11,23 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function(){
 
-Route::get('/user-info/upload-cv','UserInfoController@uploadCv')->name('upload-cv');
+	// Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user-info/step1', 'UserInfoController@step1')->name('step1');
+	Route::get('/user-info/upload-cv','UserInfoController@uploadCv')->name('upload-cv');
 
-Route::post('/user-info/step1', 'UserInfoController@step1Update')->name('step1Update');
+	Route::post('/user-info/upload-cv','UserInfoController@saveCv')->name('save-cv');
 
-Route::get('/user-info/step2', 'UserInfoController@step2')->name('step2');
+	Route::get('/user-info/step1', 'UserInfoController@step1')->name('step1');
 
-Route::post('/user-info/step2', 'UserInfoController@step2Update')->name('step2Update');
+	Route::post('/user-info/step1', 'UserInfoController@step1Update')->name('step1Update');
+
+	Route::get('/user-info/step2', 'UserInfoController@step2')->name('step2');
+
+	Route::post('/user-info/step2', 'UserInfoController@step2Update')->name('step2Update');
+
+	Route::get('/moncv','PageController@moncv')->name('moncv');
+
+	Route::get('/download-cv','PageController@getDownload')->name('download-cv');
+
+	Route::get('/job-search-result','JobController@searchResult')->name('job-search-result');
+
+});
 
 Route::get('/design', function() {
     return view('layouts.design');
