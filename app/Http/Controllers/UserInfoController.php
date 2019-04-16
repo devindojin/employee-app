@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\Traits\FileUploadsTrait;
 use App\Repositories\Traits\FileDeletesTrait;
+use App\Repositories\Traits\CurlRequestTrait;
 
 use DB;
 use App\User;
@@ -17,9 +18,37 @@ class UserInfoController extends Controller
 {
     use FileUploadsTrait;
     use FileDeletesTrait;
+    use CurlRequestTrait;
 
     public function uploadCv () 
     {
+        $token = env("ZOHO_ACCESS_TOKEN");
+
+        $id = Auth::user()->id;
+        
+        $User = User::findorFail($id);
+
+        $insertXml = '<Candidates><row no="1"><FL val="First Name">Temp FN</FL><FL val="Last Name">Temp LN</FL><FL val="Email">'.$User->email.'</FL></row></Candidates>';
+        
+        $finalXml = urlencode($insertXml);
+        
+        $insertUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/addRecords?authtoken=$token&scope=recruitapi&version=2&xmlData=$finalXml";
+
+        $response = $this->request($insertUrl,"POST");
+
+        $resArr = json_decode($response);
+        
+        $recordArr = [];
+
+        foreach ($resArr->response->result->recorddetail->FL as $value) {
+            $key = str_replace(' ','_',strtolower($value->val));
+            $recordArr[$key] = $value->content;
+        }
+
+        $User->zr_id = $recordArr['id'];
+
+        $User->save();
+        
         return view('userInfoPage.uploadCv');
     }
 
@@ -39,6 +68,14 @@ class UserInfoController extends Controller
 
         $User->save();
 
+        // upload cv in zoho recruit
+        $token = env("ZOHO_ACCESS_TOKEN");
+        $recruitId = $User->zr_id;
+        $file = public_path('storage/'.$fileInfo);
+        $requestUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
+
+        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file);
+        
         return redirect()->route('step1');
 
     }
@@ -75,6 +112,16 @@ class UserInfoController extends Controller
 
         $User->save();
 
+
+        // update record in zoho recruit
+        $token = env("ZOHO_ACCESS_TOKEN");
+        $recordId = $User->zr_id;
+        $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL></row></Candidates>';
+        $finalXml = urlencode($updateXml);
+
+        $updateUrl = "https://recruit.zoho.com/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
+        $res = $this->request($updateUrl,"POST");
+        
         return redirect()->route('step2')->with('status', "User info updated successfully");
     }
 

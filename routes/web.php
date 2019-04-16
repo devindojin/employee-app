@@ -35,7 +35,11 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/download-cv','PageController@getDownload')->name('download-cv');
 
-	Route::get('/job-search-result','JobController@searchResult')->name('job-search-result');
+	Route::get('/jobs','JobController@jobs')->name('jobs');
+
+	Route::get('/job/{id}','JobController@job')->name('job');
+
+	Route::post('/job/{id}','JobController@applyJob')->name('apply-job');
 
 });
 

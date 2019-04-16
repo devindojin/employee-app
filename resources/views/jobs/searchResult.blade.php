@@ -13,46 +13,34 @@
            	</select>
         </form>
         <div class="job-search-section">
-        	<div class="search-no">12 033 offres d'emploi</div>
-
+        	<div class="search-no">{{count($data)}} offres d'emploi</div>
+        	@foreach ($data as $result)
         	<div class="jss-sub-section">
-	        	<div>
-	        		<h5>Responsable Bureau d'etudes</h5>
-	        		<h6>(H/F)*</h6>
-	        		<h5>Cybele Conseils</h5>
-	        	</div>
-
+	        	<a href="{{ route('job',['id'=> $result['jobopeningid']]) }}">
+		        	<div>
+		        		<p class="heading1">
+		        		{{ isset($result['posting_title'])?$result['posting_title']:'-' }}</p>
+		        		<p class="heading2">(H/F)*</p>
+		        		<p class="heading1">
+		        		{{ isset($result['client_name'])?$result['client_name']:'-' }}</p>
+		        	</div>
+	        	</a>
 	        	<div class="jss-section3">
 	        		<a href="">
-	        			<i class="fas fa-briefcase"></i> CDI
+	        			<i class="fas fa-briefcase"></i> 
+	        			{{ isset($result['job_type'])?$result['job_type']:'-' }}
 	        		</a>
 	        		<a href="">
-	        			<i class="fa fa-map-marker"></i> 77
+	        			<i class="fa fa-map-marker"></i> 
+	        			{{ isset($result['industry'])?$result['industry']:'-' }}
 	        		</a>
 	        		<a href="">
-	        			<i class="material-icons" style="font-size:14px">&#xe334;</i> il y a un mois
+	        			<i class="material-icons" style="font-size:14px">&#xe334;</i> 
+	        			{{ isset($result['date_opened'])?$result['date_opened']:'-' }}
 	        		</a>
 	        	</div>
 	        </div>
-	        <div class="jss-sub-section">
-	        	<div>
-	        		<h5>Responsable Bureau d'etudes</h5>
-	        		<h6>(H/F)*</h6>
-	        		<h5>Cybele Conseils</h5>
-	        	</div>
-
-	        	<div class="jss-section3">
-	        		<a href="">
-	        			<i class="fas fa-briefcase"></i> CDI
-	        		</a>
-	        		<a href="">
-	        			<i class="fa fa-map-marker"></i> 77
-	        		</a>
-	        		<a href="">
-	        			<i class="material-icons" style="font-size:14px">&#xe334;</i> il y a un mois
-	        		</a>
-	        	</div>
-	        </div>
+	        @endforeach
         </div>
 </div>
 
