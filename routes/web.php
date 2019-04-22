@@ -35,13 +35,18 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/download-cv','PageController@getDownload')->name('download-cv');
 
-	Route::get('/jobs','JobController@jobs')->name('jobs');
+	Route::get('notification', 'PageController@notification')->name('notification');
 
-	Route::get('/job/{id}','JobController@job')->name('job');
-
-	Route::post('/job/{id}','JobController@applyJob')->name('apply-job');
+	Route::post('notification', 'PageController@saveNotification')->name('save-notification');
 
 });
+
+Route::get('/jobs','JobController@jobs')->name('jobs');
+
+Route::get('/job/{id}/{action?}','JobController@job')->name('job');
+
+Route::post('/job/{id}','JobController@applyJob')->name('apply-job');
+
 
 Route::get('/design', function() {
     return view('layouts.design');

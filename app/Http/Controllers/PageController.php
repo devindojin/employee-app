@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use DB;
 use App\User;
+use App\Local;
+use App\Notification;
 
 use Auth;
 
@@ -31,5 +33,23 @@ class PageController extends Controller
 	            );
 
 	    return response()->download($file, $fileName, $headers);
+	}
+
+	public function notification ()
+	{
+		$locals = Local::get();
+
+		return view('pages.notification',['locals'=>$locals]);
+	}
+
+	public function saveNotification (Request $request)
+	{
+		$notification  = new Notification;
+
+		$notification->title = $request->poste_title;
+		$notification->type = implode(',',$request->contract_type);
+
+		$notification->save();
+		$notification->locals()->sync($request->local);
 	}
 }
