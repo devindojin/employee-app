@@ -35,9 +35,13 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/download-cv','PageController@getDownload')->name('download-cv');
 
+	Route::get('notifications', 'PageController@notifications')->name('notifications');
+
 	Route::get('notification', 'PageController@notification')->name('notification');
 
-	Route::post('notification', 'PageController@saveNotification')->name('save-notification');
+	Route::get('notification/{id}', 'PageController@editNotification')->name('edit-notification');
+
+	Route::post('notification/{id?}', 'PageController@saveNotification')->name('save-notification');
 
 });
 

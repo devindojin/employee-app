@@ -35,6 +35,13 @@ class PageController extends Controller
 	    return response()->download($file, $fileName, $headers);
 	}
 
+	public function notifications ()
+	{
+		$notifications = Notification::get();
+
+		return view('pages.notificationList', ['data'=>$notifications]);
+	}
+
 	public function notification ()
 	{
 		$locals = Local::get();
@@ -42,9 +49,26 @@ class PageController extends Controller
 		return view('pages.notification',['locals'=>$locals]);
 	}
 
+	public function editNotification (Request $request)
+	{
+		$id = $request->id;
+
+		$locals = Local::get();
+
+		$notifications = Notification::findorfail($id)->load('locals');
+		
+		return view('pages.editNotification',['locals'=>$locals, 'data' => $notifications]);
+	}
+
 	public function saveNotification (Request $request)
 	{
-		$notification  = new Notification;
+		$id = $request->id;
+
+		if($id != "") {
+			$notification  = Notification::find($id);
+		} else {
+			$notification  = new Notification;
+		}
 
 		$notification->title = $request->poste_title;
 		$notification->type = implode(',',$request->contract_type);
