@@ -23,7 +23,7 @@
 		</div>
 		<ul class="menu_list list-unstyled">
 			<li><a href="{{ route('moncv') }}">Mon CV</a></li>
-			<li><a href="#">Mes alertes mail</a></li>
+			<li><a href="{{ route('notifications') }}">Mes alertes mail</a></li>
 			<li><a href="#">Mes offres</a></li>
 			<li><a href="#">Mes cadidatures</a></li>
 			<li><a href="{{ route('moncv') }}">Mon compte</a></li>

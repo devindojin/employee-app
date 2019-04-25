@@ -13,7 +13,7 @@ trait CurlRequestTrait
      * @return json
      */
     
-    public function request ($getUrl, $action, $headers = array(), $param = '', $file = '')
+    public function request ($getUrl, $action, $headers = array(), $param = '', $file = '',$fileName='')
     {
         $ch = curl_init();
 
@@ -72,7 +72,7 @@ trait CurlRequestTrait
           curl_setopt_array ( $ch, array (
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => array (
-              'content' => new \CURLFile ( $file, "","resume.pdf" ),
+              'content' => new \CURLFile ( $file, "", $fileName ),
               'id' => $param
             )
           ) );

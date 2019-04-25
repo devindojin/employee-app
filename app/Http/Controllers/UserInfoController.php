@@ -74,7 +74,7 @@ class UserInfoController extends Controller
         $file = public_path('storage/'.$fileInfo);
         $requestUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
 
-        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file);
+        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file,"resume.pdf");
         
         return redirect()->route('step1');
 
@@ -94,10 +94,16 @@ class UserInfoController extends Controller
         
         $User = User::findorFail($id);
         
+        if($request->birth_date != "") {
+            $birthDate = date('Y-m-d', strtotime($request->birth_date));
+        } else {
+            $birthDate = NULL;
+        }
+        
         $User->civility = $request->civility;
         $User->last_name = $request->last_name;
         $User->name = $request->first_name;
-        $User->birth_date = $request->birth_date;
+        $User->birth_date = $birthDate;
         $User->code_postal = $request->code_postal;
         $User->city = $request->city;
         $User->pays = $request->pays;
@@ -139,8 +145,17 @@ class UserInfoController extends Controller
         
         $User = User::findorFail($id);
 
-        $lph_from = $request->lph_From_yr."-".$request->lph_From_mo."-01";
-        $lph_to = $request->lph_To_yr."-".$request->lph_To_mo."-01";
+        if ($request->lph_From_yr != "" && $request->lph_From_mo != "") {
+            $lph_from = $request->lph_From_yr."-".$request->lph_From_mo."-01";
+        } else {
+            $lph_from = null;
+        }
+
+        if ($request->lph_To_yr != "" && $request->lph_To_mo != "") {
+            $lph_to = $request->lph_To_yr."-".$request->lph_To_mo."-01";
+        } else {
+            $lph_to = null;
+        }
 
         $User->experience = $request->experience;
         $User->lph_From = $lph_from;
@@ -158,5 +173,7 @@ class UserInfoController extends Controller
         $User->lang_22 = $request->lang_22;
 
         $User->save();
+
+        return redirect()->route('jobs');
     }
 }

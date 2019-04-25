@@ -57,11 +57,7 @@
 	<p class="heading1">
 		Me lettre de motivation
 	</p>
-	<div style="border: 5px solid #010101; padding: 10px">
-		<p class="heading1">
-			Bonjour,<br><br>Je me permets de vous solliciter pour le poste de "Responsable bureau d'etudes". Veuillez trouver mon CV en piece jointe.<br><br>Cordialement
-		</p>
-	</div>
+	<textarea class="form-control" name="cover_letter" rows="10" cols="5" style="border: 5px solid #010101; height: auto">Bonjour,Je me permets de vous solliciter pour le poste de "Responsable bureau d'etudes". Veuillez trouver mon CV en piece jointe.Cordialement</textarea>
 	<div class="text-center">
 		<button type="submit" class="btn">Valider ɒour terminer</button>
 	</div>

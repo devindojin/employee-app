@@ -43,9 +43,10 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::post('notification/{id?}', 'PageController@saveNotification')->name('save-notification');
 
+	Route::delete('notification/{id?}', 'PageController@deleteNotification')->name('delete-notification');
 });
 
-Route::get('/jobs','JobController@jobs')->name('jobs');
+Route::get('/jobs/{from?}/{to?}/{cat?}','JobController@jobs')->name('jobs');
 
 Route::get('/job/{id}/{action?}','JobController@job')->name('job');
 

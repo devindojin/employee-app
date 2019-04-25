@@ -7,13 +7,11 @@
 <div class="col-xs-12">
         <form method="POST" action="" class="job-search-section">
             @csrf
-           	<select class="form-control">
-           		<option>1</option>
-           		<option>2</option>
-           	</select>
+            @include('jobs.partials.jobCatDropdown')
         </form>
         <div class="job-search-section">
         	<div class="search-no">{{count($data)}} offres d'emploi</div>
+        	@if(count($data) > 0)
         	@foreach ($data as $result)
         	<div class="jss-sub-section">
 	        	<a href="{{ route('job',['id'=> $result['jobopeningid']]) }}">
@@ -41,6 +39,12 @@
 	        	</div>
 	        </div>
 	        @endforeach
+	        <div>
+	        	<a href="{{ route('jobs', ['from'=>$from, 'to'=>$to, 'cat'=>$cat]) }}">Next</a>
+	        </div>
+	        @else
+
+	        @endif
         </div>
 </div>
 

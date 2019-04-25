@@ -8,7 +8,51 @@ body {
 a:hover{
 	text-decoration:none;
 }
- 
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.header-section {
+  background-image: url('../images/homepage.jpg');
+  background-size: cover;
+  height: 350px;
+}
+
+.header-section p {
+  position: absolute;
+  font-size: 35px;
+  color: #fff;
+  top: 120px;
+  right: 250px; 
+  width: 300px;
+  text-align: center;
+}
+
+p.home-heading {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.hm-fb {
+  background-image: url('../images/hmfb.jpg');
+  background-size: cover;
+  height: 50px;
+}
+
+.hm-lkin {
+  background-image: url('../images/hmlkin.png');
+  background-size: cover;
+  height: 50px;
+}
+.hm-plus {
+  background-image: url('../images/hmplus.png');
+  background-size: cover;
+  height: 50px; 
+}
+
 .layout {
   max-width: 768px;
   width: 100%;
@@ -139,6 +183,17 @@ select.classic {
 }
   
 .action_block .btn {
+  margin-bottom: 20px;
+  height: 45px;
+  min-width: 250px;
+  font-size: 20px;
+  background: #888;
+  color: #fff;
+  border: 0;
+  border-radius: 0;
+}
+
+.action_block a.hm-btn {
   margin-bottom: 20px;
   height: 45px;
   min-width: 250px;
@@ -516,12 +571,12 @@ p.notes {
 }
 
 .heading1 {
-  font-size: 35px;
-  font-weight: 800;
+  font-size: 25px;
+  font-weight: 700
 }
 
 .heading2 {
-  font-weight: 800;
+  font-size: 25px;
 }
 
 .job-page .btn {
@@ -548,7 +603,13 @@ p.notes {
   border: 1px solid #ccc;
 }
 /*job search section*/
- 
+
+/*notificaiton page*/
+.delete-icon {
+  background: none;
+  border: none;
+  color: #337abb;
+}
 /*********RESPONSIVE LAYOUT **************/
  
  @media(max-width: 768px) {

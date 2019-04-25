@@ -71,9 +71,28 @@ class PageController extends Controller
 		}
 
 		$notification->title = $request->poste_title;
-		$notification->type = implode(',',$request->contract_type);
+
+		if (isset($request->contract_type) && count($request->contract_type) > 1) {
+			$notification->type = implode(',',$request->contract_type);
+		} else {
+			$notification->type = $request->contract_type;
+		}
 
 		$notification->save();
 		$notification->locals()->sync($request->local);
+
+		return redirect()->route('notifications');
 	}
+
+	public function deleteNotification(Request $request)
+    {
+    	$id = $request->id;
+
+    	$notification = Notification::find($id);
+		$notification->delete();
+
+		$notification->locals()->detach();
+
+		return back();
+    }
 }

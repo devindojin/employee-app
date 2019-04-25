@@ -8,7 +8,7 @@
 <h2 class="heading">Créez votre alerte mail</h2>
 <p>Soyez averti dès qu'une nouvelle offre qui vous correspond arrive</p>
 </div>
-<div class="col-xs-12 moncv-border">
+<div class="col-xs-12">
 	<form action="" method="POST">
     	{{csrf_field()}}
 	    <div class="well well-lg custom_well">
@@ -34,7 +34,7 @@
 	      	</div>
 	      	<div class="panel_form">
 		        <div class="form-group">
-		        	
+
 		        	@if ($data->locals->count() > 0)
 		        	@php
 		        	$localArr = $data->locals->pluck('id')->toArray();

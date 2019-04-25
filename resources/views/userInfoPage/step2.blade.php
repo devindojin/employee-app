@@ -44,16 +44,32 @@ $lph_To_yr = date("Y",strtotime($data->lph_To));
       <div class="panel_form">
         <div class="form-group">
           <label for="periode">Période</label>
-          De 
-          <input type="text" class="form-control input-lg" id="lph_From_mo" name="lph_From_mo" value="{{ old('lph_From_mo', $lph_From_mo) }}"> / 
-          <input type="text" class="form-control input-lg" id="lph_From_yr" name="lph_From_yr" value="{{ old('lph_From_yr', $lph_From_yr) }}"> 
-          a 
-          <input type="text" class="form-control input-lg" id="lph_To_mo" name="lph_To_mo" value="{{ old('lph_To_mo', $lph_To_mo) }}"> / 
-          <input type="text" class="form-control input-lg" id="lph_To_yr" name="lph_To_yr" value="{{ old('lph_To_yr', $lph_To_yr) }}">
+          <div class="col-xs-12">
+            <div class="col-xs-2"><label>De</label></div> 
+            <div class="col-xs-2">
+              <input type="text" class="form-control input-lg" id="lph_From_mo" name="lph_From_mo" value="{{ old('lph_From_mo', $lph_From_mo) }}" maxlength="2" placeholder="mm">
+            </div>
+            <div class="col-xs-2"><label>/</label></div>
+            <div class="col-xs-2">
+              <input type="text" class="form-control input-lg" id="lph_From_yr" name="lph_From_yr" value="{{ old('lph_From_yr', $lph_From_yr) }}" maxlength="4" placeholder="yyyy">
+            </div>
+            <div class="col-xs-2"><label>a</label></div> 
+          </div>
+          <div class="col-xs-12 from-date-sec">
+            <div class="col-xs-2">
+              <input type="text" class="form-control input-lg" id="lph_To_mo" name="lph_To_mo" value="{{ old('lph_To_mo', $lph_To_mo) }}" maxlength="2" placeholder="mm">
+            </div>
+            <div class="col-xs-2"><label>/</label></div>
+            <div class="col-xs-2">
+              <input type="text" class="form-control input-lg" id="lph_To_yr" name="lph_To_yr" value="{{ old('lph_To_yr', $lph_To_yr) }}" maxlength="4" placeholder="yyyy">
+            </div>
+          </div>
         </div>
         <div class="form-group">
+          <div class="col-xs-12">
           <div class="checkbox">
-            Ou<label><input type="checkbox" value="1" name="still_in_office" @if(old("still_in_office",$data->still_in_office) == "1") checked="checked" @else @endif>toujours en poste</label>
+            Ou<label><input type="checkbox" value="1" id="still_in_office" name="still_in_office" @if(old("still_in_office",$data->still_in_office) == "1") checked="checked" @else @endif>toujours en poste</label>
+          </div>
           </div>
         </div>
         <div class="form-group">

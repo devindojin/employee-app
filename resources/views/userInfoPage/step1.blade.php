@@ -42,7 +42,7 @@ $contDesArr = explode(",",$data->contract_desired);
         </div>
         <div class="form-group">
           <label for="birth_date">Date de naissance:</label>
-          <input type="text" class="form-control input-lg" id="birth_date" name="birth_date" value="{{ old('birth_date', $data->birth_date) }}">
+          <input type="text" class="form-control input-lg" id="birth_date" name="birth_date" value="{{ old('birth_date', $data->birth_date) }}" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="code_postal">Code postal:</label>

@@ -17,7 +17,7 @@
 		</a>
 	</p>
 	<div class="action_block text-center">
-	  <a href="" class="btn">modifier la pièce jointe</a>
+	  <a href="{{ route('upload-cv') }}" class="btn">modifier la pièce jointe</a>
 	</div>
 	<hr></hr>
 	<h3 class="heading">Votre profil Emploi Paysagiste:</h3>
@@ -28,7 +28,7 @@
 		</a>
 	</p>
 	<div class="action_block text-center">
-	  <a href="" class="btn">modifier votre profil</a>
+	  <a href="{{ route('step1') }}" class="btn">modifier votre profil</a>
 	</div>
 </div>
 
