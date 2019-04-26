@@ -4,15 +4,30 @@
 
 @section('content')
 
-@php
 
+
+@if ($data->lph_From != "")
+@php
 $lph_From_mo = date("m",strtotime($data->lph_From));
 $lph_From_yr = date("Y",strtotime($data->lph_From));
+@endphp
+@else
+@php
+$lph_From_mo = $lph_From_yr = "";
+@endphp
+@endif
 
+@if ($data->lph_To != "")
+@php
 $lph_To_mo = date("m",strtotime($data->lph_To));
 $lph_To_yr = date("Y",strtotime($data->lph_To));
-
 @endphp
+@else
+@php
+$lph_To_mo = $lph_To_yr = "";
+@endphp
+@endif
+
 <div class="col-xs-12">
 <h2 class="heading">Mon CV</h2>
 <p class="default_text">Bravo!<br>Encore un dernier effort et nous y sommes</p>

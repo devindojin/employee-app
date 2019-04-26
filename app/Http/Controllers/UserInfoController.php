@@ -13,6 +13,7 @@ use App\User;
 use Auth;
 
 use App\Http\Requests\UserInfoRequest;
+use App\Http\Requests\UserInfoRequest2;
 
 class UserInfoController extends Controller
 {
@@ -99,7 +100,7 @@ class UserInfoController extends Controller
         } else {
             $birthDate = NULL;
         }
-        
+
         $User->civility = $request->civility;
         $User->last_name = $request->last_name;
         $User->name = $request->first_name;
@@ -139,7 +140,7 @@ class UserInfoController extends Controller
         return view('userInfoPage.step2', ['data'=>$userInfo]);
     }
 
-    public function step2Update (Request $request)
+    public function step2Update (UserInfoRequest2 $request)
     {
         $id = Auth::user()->id;
         

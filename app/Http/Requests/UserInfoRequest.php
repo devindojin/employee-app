@@ -25,8 +25,8 @@ class UserInfoRequest extends FormRequest
     {
         return [
             'civility'      => 'max:20',
-            'last_name'     => 'max:50',
-            'first_name'    => 'max:50',
+            'last_name'     => 'required|max:50',
+            'first_name'    => 'required|max:50',
             'code_postal'   => 'max:10',
             'city'          => 'max:25',
             'telephone'     => 'max:12',
