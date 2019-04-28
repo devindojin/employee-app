@@ -40,7 +40,7 @@
 	        </div>
 	        @endforeach
 	        <div>
-	        	<a href="{{ route('jobs', ['from'=>$from, 'to'=>$to, 'cat'=>$cat]) }}">Next</a>
+	        	<a class="next-btn" href="{{ route('jobs', ['from'=>$from, 'to'=>$to, 'cat'=>$cat]) }}">Suivant</a>
 	        </div>
 	        @else
 

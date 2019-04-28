@@ -520,19 +520,25 @@ p.notes {
 /*********job search section*********/
 
 .search-no {
-  padding: 20px;
+  padding: 20px 20px 20px 20px;
   background-color: #eee;
   text-align: left;
   color: #999;
 }
 
 .job-search-section {
-  background-color: #eee;
+
+}
+
+.job-search-section .next-btn {
+  float: right;
+  color: #888;
 }
 
 .jss-sub-section {
   background-color: #FFF;
-  margin: 18px 0px;
+  margin: 0px 0px 20px 0px;
+  padding: 15px;
 }
 
 .jss-sub-section a {
@@ -646,7 +652,9 @@ p.notes {
 /*********RESPONSIVE LAYOUT **************/
  
  @media(max-width: 768px) {
-     
+  .header-section p {
+    right: 40px;
+  }
  }
   
  /*********RESPONSIVE LAYOUT END**************/
