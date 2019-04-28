@@ -20,7 +20,12 @@
 <div class="container-fluid">
 <div class="row">
 @yield('content')
+
+@if(Request::segment(1) != "")
 @include('layouts.footer')
+@else
+
+@endif
 </div>
 </div>
 </div>
