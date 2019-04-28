@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Traits\FileUploadsTrait;
 use App\Repositories\Traits\FileDeletesTrait;
 use App\Repositories\Traits\CurlRequestTrait;
+use Illuminate\Support\Facades\Hash;
 
 use DB;
 use App\User;
@@ -33,7 +34,7 @@ class UserInfoController extends Controller
         
         $finalXml = urlencode($insertXml);
         
-        $insertUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/addRecords?authtoken=$token&scope=recruitapi&version=2&xmlData=$finalXml";
+        $insertUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/addRecords?authtoken=$token&scope=recruitapi&version=2&xmlData=$finalXml";
 
         $response = $this->request($insertUrl,"POST");
 
@@ -73,7 +74,7 @@ class UserInfoController extends Controller
         $token = env("ZOHO_ACCESS_TOKEN");
         $recruitId = $User->zr_id;
         $file = public_path('storage/'.$fileInfo);
-        $requestUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
+        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
 
         $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file,"resume.pdf");
         
@@ -126,7 +127,7 @@ class UserInfoController extends Controller
         $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL></row></Candidates>';
         $finalXml = urlencode($updateXml);
 
-        $updateUrl = "https://recruit.zoho.com/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
+        $updateUrl = "https://recruit.zoho.eu/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
         $res = $this->request($updateUrl,"POST");
         
         return redirect()->route('step2')->with('status', "User info updated successfully");
@@ -176,5 +177,23 @@ class UserInfoController extends Controller
         $User->save();
 
         return redirect()->route('jobs');
+    }
+
+    public function updatePassword ()
+    {
+        return view('auth.passwords.update');
+    }
+
+    public function savePassword (Request $request)
+    {
+        $userId = Auth::user()->id;
+
+        $user = User::find($userId);
+
+        $user->password = Hash::make($request->pass);
+
+        $user->save();
+
+        return redirect()->back();
     }
 }

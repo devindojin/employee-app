@@ -19,9 +19,9 @@
 			{{isset($data['date_opened'])?$data['date_opened']:'-'}}
 		</a>
 	</div>
-	<button type="button" class="btn">Je postule</button>
+	<button type="submit" class="btn">Je postule</button>
     <div>
-    	<p class="heading1"><i class="far fa-heart">&nbsp;</i> enregistrer l'offre</p>
+    	<p class="heading1"><button type="submit" value="favourite" name="favourite"><i class="far fa-heart">&nbsp;</i></button> enregistrer l'offre</p>
     </div>
     @if (Request::segment('3') && Request::segment('3') == "applied")
 	<p style="margin-bottom: 40px">

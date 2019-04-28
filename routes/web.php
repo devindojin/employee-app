@@ -44,6 +44,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('notification/{id?}', 'PageController@saveNotification')->name('save-notification');
 
 	Route::delete('notification/{id?}', 'PageController@deleteNotification')->name('delete-notification');
+
+	Route::get('jobs-applied','JobController@jobsApplied')->name('jobs-applied');
+
+	Route::delete('remove-fav/{id}','JobController@removeFav')->name('remove-fav');
+
+	Route::get('update-password','UserInfoController@updatePassword')->name('update-pwd');
+	Route::post('update-password','UserInfoController@savePassword')->name('update-pwd');
 });
 
 Route::get('/jobs/{from?}/{to?}/{cat?}','JobController@jobs')->name('jobs');

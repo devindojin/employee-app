@@ -610,6 +610,23 @@ p.notes {
   border: none;
   color: #337abb;
 }
+
+/*job applied page*/
+
+.job-app-sec1 {
+  border-bottom: 1px solid #cccccc;
+  margin: 20px 0px;
+}
+
+.job-app-sec2 {
+  margin-top: 10px;
+}
+.job-app-sec2 a {
+  background: #337ab7;
+  border: none;
+  border-radius: 0;
+  color: #fff;
+}
 /*********RESPONSIVE LAYOUT **************/
  
  @media(max-width: 768px) {

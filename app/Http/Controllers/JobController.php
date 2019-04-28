@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 
 use DB;
 use App\User;
+use App\JobsApplied;
 
 use Auth;
 
@@ -34,22 +35,27 @@ class JobController extends Controller
         }
 
 
-    	// $getUrl = "https://recruit.zoho.com/recruit/private/json/JobOpenings/getRecords?authtoken=$token&scope=recruitapi&fromIndex=$fromIndex&toIndex=$toIndex";
         $cols = urlencode("Posting Title,Client Name,Job Type,Industry,Date Opened");
 
-        if(!isset($request->cat)) {
-            $cat = "Communications";
-        } else {
+        if(isset($request->cat) && $request->cat != "") {
             $cat = $request->cat;
-        }
-        $con = urlencode("Industry|=|$cat");
+            $con = urlencode("Industry|=|$cat");
+            $searchStr = '&searchCondition=('.$con.')';
 
-        $getUrl = "https://recruit.zoho.com/recruit/private/json/JobOpenings/getSearchRecords?authtoken=$token&scope=recruitapi&version=2&newFormat=1&selectColumns=JobOpenings($cols)&searchCondition=($con)&fromIndex=$fromIndex&toIndex=$toIndex";
+            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getSearchRecords?authtoken=$token&scope=recruitapi&version=2&newFormat=1&selectColumns=JobOpenings($cols)$searchStr&fromIndex=$fromIndex&toIndex=$toIndex";
+
+        } else {
+            $cat = "";
+
+            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecords?authtoken=$token&scope=recruitapi&fromIndex=$fromIndex&toIndex=$toIndex";
+        }
+
+        
 
     	$response = $this->request($getUrl,"GET");
 
     	$resArr = json_decode($response);
-    	
+    	// dd($resArr);
     	$i = 0;
     	
     	$jobsArr = [];
@@ -86,7 +92,7 @@ class JobController extends Controller
     	
     	$id = $request->id;
     	
-    	$getUrl = "https://recruit.zoho.com/recruit/private/json/JobOpenings/getRecordById?&authtoken=$token&scope=recruitapi&version=2&id=$id";
+    	$getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecordById?&authtoken=$token&scope=recruitapi&version=2&id=$id";
     	
 
     	$response = $this->request($getUrl,"GET");
@@ -110,8 +116,20 @@ class JobController extends Controller
 
     public function applyJob (Request $request) 
     {
+        $favApply = $request->favourite;
+
+        if($favApply) {
+            $favJobApp = new JobsApplied;
+
+            $favJobApp->user_id = Auth::user()->id;
+            $favJobApp->job_id = $request->id;
+
+            $favJobApp->save();   
+        }
+
         $this->createCoverLetter($request);
-    	if (Auth::check()) {
+    	
+        if (Auth::check()) {
     		$id = Auth::user()->id;
     		$jobId = $request->id;
 
@@ -143,7 +161,7 @@ class JobController extends Controller
         $heading = urlencode("Cover Letter");
         $recruitId = Auth::user()->zr_id;
         // $file = public_path('storage/app/public/cover_letter/'.$fileName);
-        $requestUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=$heading&version=2";
+        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=$heading&version=2";
 
         $req = $this->request($requestUrl,"FILE",array(),$recruitId,$filePath,"cover_letter.txt");
     }
@@ -186,7 +204,7 @@ class JobController extends Controller
         
         $finalXml = urlencode($insertXml);
         
-        $insertUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/addRecords?authtoken=$token&scope=recruitapi&version=2&xmlData=$finalXml";
+        $insertUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/addRecords?authtoken=$token&scope=recruitapi&version=2&xmlData=$finalXml";
 
         $response = $this->request($insertUrl,"POST");
 
@@ -206,7 +224,7 @@ class JobController extends Controller
         // update cv
         $recruitId = $recordArr['id'];
         $file = public_path('storage/'.$fileInfo);
-        $requestUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
+        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
 
         $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file);
 
@@ -225,8 +243,115 @@ class JobController extends Controller
 
     	
 
-    	$applyUrl = "https://recruit.zoho.com/recruit/private/json/Candidates/changeStatus?authtoken=$token&scope=recruitapi&jobId=$jobId&candidateIds=$candidateId&candidateStatus=Associated&comments=PlacedinJavaDevelopment";
+    	$applyUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/associateJobOpening?authtoken=$token&scope=recruitapi&jobIds=$jobId&candidateIds=$candidateId&candidateStatus=Associated&comments=PlacedinJavaDevelopment";
 
     	$res = $this->request($applyUrl,"POST");
 	}
+
+
+    public function jobsAppliedCh ()
+    {
+        $token = env("ZOHO_ACCESS_TOKEN");
+
+        $candidateId = Auth::user()->zr_id;
+
+        $getUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/getAssociatedJobOpenings?&authtoken=$token&scope=recruitapi&version=2&id=$candidateId";
+
+        $res = $this->request($getUrl,"GET");
+        
+        $resArr = json_decode($res);
+        
+        $jobsIdArr = [];
+
+        if(isset($resArr->response->result)) {
+            $i = 0;
+            foreach ($resArr->response->result->Candidates->row as $value) {
+                if(isset($value->FL)) {
+                    // $key = str_replace(' ','_',strtolower($value->FL[0]->val));
+                    $jobsIdArr[$i] = $value->FL[0]->content;
+                }
+            $i++;
+            }
+        }
+        
+        $j = 0;
+        $jobArr = [];
+        if(count($jobsIdArr)>0) {
+            foreach ($jobsIdArr as $jobId) {
+
+                $getJobDetailUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecordById?&authtoken=$token&scope=recruitapi&version=2&id=$jobId";
+
+                $getJobDetail = $this->request($getJobDetailUrl,"GET");
+
+                $getJobDetailArr = json_decode($getJobDetail);
+
+                if(isset($getJobDetailArr->response->result)) {
+                    
+                    foreach ($getJobDetailArr->response->result->JobOpenings->row->FL as $value2) {
+                        $key = str_replace(' ','_',strtolower($value2->val));
+                        $jobArr[$j][$key] = $value2->content;
+                    }
+                } else {
+                    return abort(404);
+                }
+            $j++;
+            }
+        }
+
+        return view('jobs.jobsApplied',['jobsAppArr'=>$jobArr]);
+    }
+
+    public function jobsApplied ()
+    {
+        $token = env("ZOHO_ACCESS_TOKEN");
+
+        $userId = Auth::user()->id;
+        $candidateId = Auth::user()->zr_id;
+
+        $jobsApplied = JobsApplied::where('user_id',$userId)->get();
+
+        $j = 0;
+        $jobArr = [];
+        
+        if(count($jobsApplied)>0) {
+            foreach ($jobsApplied as $jobDataArr) {
+                
+                $recordId = $jobDataArr->id;
+                
+                $jobId = $jobDataArr->job_id;
+
+                $getJobDetailUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecordById?&authtoken=$token&scope=recruitapi&version=2&id=$jobId";
+
+                $getJobDetail = $this->request($getJobDetailUrl,"GET");
+
+                $getJobDetailArr = json_decode($getJobDetail);
+
+                if(isset($getJobDetailArr->response->result)) {
+                    
+                    foreach ($getJobDetailArr->response->result->JobOpenings->row->FL as $value2) {
+                        $key = str_replace(' ','_',strtolower($value2->val));
+                        $jobArr[$j][$key] = $value2->content;
+                        $jobArr[$j]['record_id'] = $recordId;
+                    }
+                } else {
+                    return abort(404);
+                }
+            $j++;
+            }
+        }
+
+        return view('jobs.jobsApplied',['jobsAppArr'=>$jobArr]);
+    }
+
+    public function removeFav (Request $request)
+    {
+        $id = $request->id;
+
+        $jobsApplied = JobsApplied::find($id);
+        
+        $jobsApplied->delete();
+
+        return redirect()->back();
+
+    }
 }
