@@ -19,16 +19,20 @@
 			{{isset($data['date_opened'])?$data['date_opened']:'-'}}
 		</a>
 	</div>
-	<button type="submit" class="btn">Je postule</button>
-    <div>
-    	<p class="heading1"><button type="submit" value="favourite" name="favourite"><i class="far fa-heart">&nbsp;</i></button> enregistrer l'offre</p>
-    </div>
+	
     @if (Request::segment('3') && Request::segment('3') == "applied")
-	<p style="margin-bottom: 40px">
+    <button type="button" class="btn">Je postule</button>
+    <div>
+    	<p class="heading1"><button type="button" class="favourite" value="favourite" name="favourite"><i class="far fa-heart">&nbsp;</i></button> enregistrer l'offre</p>
+    </div>
+	<p class="success-msg">
 		Votre candidature a bien été envoyée!
 	</p>
 	@else
-	
+	<button type="submit" class="btn">Je postule</button>
+    <div>
+    	<p class="heading1"><button type="submit" class="favourite" value="favourite" name="favourite"><i class="far fa-heart">&nbsp;</i></button> enregistrer l'offre</p>
+    </div>
 	@endif
 </div>
 

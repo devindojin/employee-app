@@ -517,7 +517,7 @@ p.notes {
 /**********Moncv Page********************/
  
 
-/*job search section*/
+/*********job search section*********/
 
 .search-no {
   padding: 20px;
@@ -525,6 +525,7 @@ p.notes {
   text-align: left;
   color: #999;
 }
+
 .job-search-section {
   background-color: #eee;
 }
@@ -591,6 +592,17 @@ p.notes {
   border-radius: 10px;
 }
 
+.job-section .favourite {
+  background: none;
+  border: none;
+}
+
+.job-section p.success-msg {
+  margin-bottom: 40px;
+  font-weight: 700;
+  color: #139145;
+}
+
 .job-section .form-control {
   position: relative;
   font-size: 16px;
@@ -602,16 +614,17 @@ p.notes {
   border-radius: 0;
   border: 1px solid #ccc;
 }
-/*job search section*/
+/*********job search section*********/
 
-/*notificaiton page*/
+/*********notificaiton page*********/
 .delete-icon {
   background: none;
   border: none;
   color: #337abb;
 }
+/*********notificaiton page*********/
 
-/*job applied page*/
+/*********job applied page*********/
 
 .job-app-sec1 {
   border-bottom: 1px solid #cccccc;
@@ -627,6 +640,9 @@ p.notes {
   border-radius: 0;
   color: #fff;
 }
+/*********job applied page*********/
+
+
 /*********RESPONSIVE LAYOUT **************/
  
  @media(max-width: 768px) {
