@@ -52,8 +52,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('update-password','UserInfoController@updatePassword')->name('update-pwd');
 	Route::post('update-password','UserInfoController@savePassword')->name('update-pwd');
 });
+Route::get('search-job','JobController@searchJobs')->name('search-job');
 
-Route::get('/jobs/{from?}/{to?}/{cat?}','JobController@jobs')->name('jobs');
+Route::post('search-job','JobController@searchJobsPost')->name('search-job-post');
+
+Route::get('/jobs/{from?}/{to?}/{cat?}/{loc?}','JobController@jobs')->name('jobs');
 
 Route::get('/job/{id}/{action?}','JobController@job')->name('job');
 

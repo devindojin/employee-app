@@ -7,7 +7,7 @@
 <div class="col-xs-12">
         <form method="POST" action="" class="job-search-section">
             @csrf
-            @include('jobs.partials.jobCatDropdown')
+            @include('jobs.partials.jobCatDropdown',['class'=> 'selectCat'])
         </form>
         <div class="job-search-section">
         	<div class="search-no">{{count($data)}} offres d'emploi</div>

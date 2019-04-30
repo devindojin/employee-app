@@ -22,7 +22,27 @@ class JobController extends Controller
     use FileDeletesTrait;
 	use CurlRequestTrait;
 
-    public function jobs (Request $request) {
+    public function searchJobs ()
+    {
+        return view('jobs.searchJobs',['cat'=>'']);
+    }
+
+    public function searchJobsPost (Request $request)
+    {
+        $cat = $request->selectCat;
+        $local = $request->selectLoc;
+
+        return redirect()->route('jobs',[
+            'from' => 1,
+            'to' => 20,
+            'cat' => $cat,
+            'loc' => $local
+        ]);
+
+    }
+
+    public function jobs (Request $request) 
+    {
 
     	$token = env("ZOHO_ACCESS_TOKEN");
 

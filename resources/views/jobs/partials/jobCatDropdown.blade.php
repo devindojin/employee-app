@@ -1,5 +1,5 @@
 
-<select class="form-control selectCat">
+<select class="form-control {{$class}}" name="selectCat">
     <option value="">None</option>
     <option value="Communications" @if($cat=="Communications") selected="selected" @else @endif>
     Communications</option>
