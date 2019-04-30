@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'login')
+@section('title', 'Login')
 
 @section('content')
 <div class="col-xs-12">

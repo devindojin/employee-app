@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'user info step 1')
+@section('title', 'Create Notification')
 
 @section('content')
 

@@ -61,8 +61,3 @@ Route::get('/jobs/{from?}/{to?}/{cat?}/{loc?}','JobController@jobs')->name('jobs
 Route::get('/job/{id}/{action?}','JobController@job')->name('job');
 
 Route::post('/job/{id}','JobController@applyJob')->name('apply-job');
-
-
-Route::get('/design', function() {
-    return view('layouts.design');
-});
