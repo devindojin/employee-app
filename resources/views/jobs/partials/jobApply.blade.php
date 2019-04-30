@@ -57,7 +57,7 @@
 	<p class="heading1">
 		Me lettre de motivation
 	</p>
-	<textarea class="form-control" name="cover_letter" rows="10" cols="5" style="border: 5px solid #010101; height: auto">Bonjour,Je me permets de vous solliciter pour le poste de "Responsable bureau d'etudes". Veuillez trouver mon CV en piece jointe.Cordialement</textarea>
+	<textarea class="form-control" name="cover_letter" rows="10" cols="5" style="border: 5px solid #010101; height: auto">Bonjour,Je me permets de vous solliciter pour le poste de "{{ isset($data['posting_title'])?$data['posting_title']:'-' }}". Veuillez trouver mon CV en piece jointe.Cordialement</textarea>
 	<div class="text-center">
 		<button type="submit" class="btn">Valider ɒour terminer</button>
 	</div>
