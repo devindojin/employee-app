@@ -45,7 +45,9 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::delete('notification/{id?}', 'PageController@deleteNotification')->name('delete-notification');
 
-	Route::get('jobs-applied','JobController@jobsApplied')->name('jobs-applied');
+	Route::get('jobs-saved','JobController@savedJobs')->name('jobs-saved');
+	
+	Route::get('jobs-applied','JobController@appliedJobs')->name('jobs-applied');
 
 	Route::delete('remove-fav/{id}','JobController@removeFav')->name('remove-fav');
 

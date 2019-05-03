@@ -139,26 +139,71 @@ class JobController extends Controller
         $favApply = $request->favourite;
 
         if($favApply) {
+            $status = $this->favJobApply($request);
+            return redirect()->route('jobs-saved')->withSuccess($status);
+        } else {
+
+            $this->createCoverLetter($request);
+        	
+            if (Auth::check()) {
+        		$id = Auth::user()->id;
+        		$jobId = $request->id;
+
+        		$this->applyJobInZoho($id,$jobId);
+        	} else {
+        		$this->applyJobAsNewUser($request);
+        	}
+        	$this->zohoJobApply($request);
+        	return redirect()->route('job', ['id'=>$jobId,'action'=>'applied']);
+        }
+    }
+
+    public function favJobApply (Request $request)
+    {
+        $appJobs = JobsApplied::where([
+            ['user_id','=',Auth::user()->id],
+            ['job_id','=',$request->id],
+            ['flag','=','saved']
+        ])->get();
+
+        if(count($appJobs)>0) {
+            $status = "You already saved this job";
+        } else {
             $favJobApp = new JobsApplied;
 
             $favJobApp->user_id = Auth::user()->id;
             $favJobApp->job_id = $request->id;
+            $favJobApp->flag = "saved";
 
-            $favJobApp->save();   
+            $favJobApp->save();
+
+            $status = "You successfully saved this job";
         }
 
-        $this->createCoverLetter($request);
-    	
-        if (Auth::check()) {
-    		$id = Auth::user()->id;
-    		$jobId = $request->id;
+        return $status;
+    }
 
-    		$this->applyJobInZoho($id,$jobId);
-    	} else {
-    		$this->applyJobAsNewUser($request);
-    	}
-    	
-    	return redirect()->route('job', ['id'=>$jobId,'action'=>'applied']);
+    public function zohoJobApply (Request $request)
+    {
+        $appJobs = JobsApplied::where([
+            ['user_id','=',Auth::user()->id],
+            ['job_id','=',$request->id],
+            ['flag','=','applied']
+        ])->get();
+
+        if(count($appJobs)>0) {
+            $status = "You already applied this job";
+        } else {
+            $favJobApp = new JobsApplied;
+
+            $favJobApp->user_id = Auth::user()->id;
+            $favJobApp->job_id = $request->id;
+            $favJobApp->flag = "applied";
+
+            $favJobApp->save();
+
+            $status = "You successfully applied this job";
+        }
     }
 
     public function createCoverLetter (Request $request)
@@ -321,14 +366,14 @@ class JobController extends Controller
         return view('jobs.jobsApplied',['jobsAppArr'=>$jobArr]);
     }
 
-    public function jobsApplied ()
+    public function savedJobs ()
     {
         $token = env("ZOHO_ACCESS_TOKEN");
 
         $userId = Auth::user()->id;
         $candidateId = Auth::user()->zr_id;
 
-        $jobsApplied = JobsApplied::where('user_id',$userId)->get();
+        $jobsApplied = JobsApplied::where('user_id',$userId)->where('flag','saved')->get();
 
         $j = 0;
         $jobArr = [];
@@ -352,6 +397,52 @@ class JobController extends Controller
                         $key = str_replace(' ','_',strtolower($value2->val));
                         $jobArr[$j][$key] = $value2->content;
                         $jobArr[$j]['record_id'] = $recordId;
+                    }
+                } else {
+                    return abort(404);
+                }
+            $j++;
+            }
+        }
+
+        return view('jobs.jobsSaved',['jobsAppArr'=>$jobArr]);
+    }
+
+
+    public function appliedJobs ()
+    {
+        $token = env("ZOHO_ACCESS_TOKEN");
+
+        $userId = Auth::user()->id;
+        $candidateId = Auth::user()->zr_id;
+
+        $jobsApplied = JobsApplied::where('user_id',$userId)->where('flag','applied')->get();
+
+        $j = 0;
+        $jobArr = [];
+        
+        if(count($jobsApplied)>0) {
+            foreach ($jobsApplied as $jobDataArr) {
+                
+                $recordId = $jobDataArr->id;
+
+                $createdAt = $jobDataArr->created_at;
+                
+                $jobId = $jobDataArr->job_id;
+
+                $getJobDetailUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecordById?&authtoken=$token&scope=recruitapi&version=2&id=$jobId";
+
+                $getJobDetail = $this->request($getJobDetailUrl,"GET");
+
+                $getJobDetailArr = json_decode($getJobDetail);
+
+                if(isset($getJobDetailArr->response->result)) {
+                    
+                    foreach ($getJobDetailArr->response->result->JobOpenings->row->FL as $value2) {
+                        $key = str_replace(' ','_',strtolower($value2->val));
+                        $jobArr[$j][$key] = $value2->content;
+                        $jobArr[$j]['record_id'] = $recordId;
+                        $jobArr[$j]['created_at'] = $createdAt;
                     }
                 } else {
                     return abort(404);

@@ -17,6 +17,7 @@ class CreateJobsAppliedTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('job_id');
+            $table->string('flag');
             $table->timestamps();
         });
     }
