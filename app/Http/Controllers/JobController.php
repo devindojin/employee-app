@@ -137,22 +137,23 @@ class JobController extends Controller
     public function applyJob (Request $request) 
     {
         $favApply = $request->favourite;
+        $jobId = $request->id;
 
         if($favApply) {
             $status = $this->favJobApply($request);
             return redirect()->route('jobs-saved')->withSuccess($status);
         } else {
-
-            $this->createCoverLetter($request);
-        	
+        		
             if (Auth::check()) {
+                
         		$id = Auth::user()->id;
-        		$jobId = $request->id;
-
+                $recruitId = Auth::user()->zr_id;
+                $this->createCoverLetter($request,$recruitId);
         		$this->applyJobInZoho($id,$jobId);
         	} else {
-        		$this->applyJobAsNewUser($request);
+                $this->applyJobAsNewUser($request);
         	}
+            
         	$this->zohoJobApply($request);
         	return redirect()->route('job', ['id'=>$jobId,'action'=>'applied']);
         }
@@ -206,31 +207,6 @@ class JobController extends Controller
         }
     }
 
-    public function createCoverLetter (Request $request)
-    {
-        $content = $request->cover_letter;
-        $fileName = Auth::user()->id.'_'.$request->id.'.txt';
-        $uploadPath = storage_path('app/public/cover_letter'); 
-        $filePath = $uploadPath.'/'.$fileName;
-
-        if (! File::isDirectory($uploadPath)) {
-            // Creating directory structure
-            File::makeDirectory($uploadPath, 0775, true);
-        }
-
-        $fp = fopen($filePath, 'w');
-        fwrite($fp, $content);
-        fclose($fp);
-
-        $token = env("ZOHO_ACCESS_TOKEN");
-        $heading = urlencode("Cover Letter");
-        $recruitId = Auth::user()->zr_id;
-        // $file = public_path('storage/app/public/cover_letter/'.$fileName);
-        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=$heading&version=2";
-
-        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$filePath,"cover_letter.txt");
-    }
-
     public function applyJobAsNewUser (Request $request)
     {
     	$request->validate([
@@ -252,13 +228,13 @@ class JobController extends Controller
         $User->file_name = $fileInfo;
 
         $User->save();
-
+        Auth::login($User);
         $jobId = $request->id;
 
-        $this->addCandidateInfoInZoho($User,$jobId);
+        $this->addCandidateInfoInZoho($request,$User,$jobId);
     }
 
-    public function addCandidateInfoInZoho ($User,$jobId)
+    public function addCandidateInfoInZoho ($request,$User,$jobId)
     {
     	$token = env("ZOHO_ACCESS_TOKEN");
 
@@ -291,11 +267,38 @@ class JobController extends Controller
         $file = public_path('storage/'.$fileInfo);
         $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
 
-        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file);
+        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file,"resume.pdf");
 
-		
+		$this->createCoverLetter($request,$recruitId);
 		
 		$this->applyJobInZoho($User->id,$jobId);
+    }
+
+    public function createCoverLetter (Request $request,$recruitId)
+    {
+        $content = $request->cover_letter;
+        $fileName = Auth::user()->id.'_'.$request->id.'.txt';
+        $uploadPath = storage_path('app/public/cover_letter'); 
+        
+        $filePath = $uploadPath.'/'.$fileName;
+        
+        if (! File::isDirectory($uploadPath)) {
+            // Creating directory structure
+            File::makeDirectory($uploadPath, 0775, true);
+        }
+
+        $fp = fopen($filePath, 'w');
+        fwrite($fp, $content);
+        fclose($fp);
+
+        $token = env("ZOHO_ACCESS_TOKEN");
+        $heading = urlencode("Cover Letter");
+        
+        // $file = public_path('storage/app/public/cover_letter/'.$fileName);
+        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=$heading&version=2";
+
+        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$filePath,"cover_letter.txt");
+
     }
 
     public function applyJobInZoho ($id,$jobId)

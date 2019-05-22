@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'user info step 1')
+@section('title', isset($data['posting_title'])?$data['posting_title']:'Job Detail Page')
 
 @section('content')
 
