@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 use DB;
 use App\User;
+use App\JobTitle;
 
 use Auth;
 
@@ -124,7 +125,7 @@ class UserInfoController extends Controller
         // update record in zoho recruit
         $token = env("ZOHO_ACCESS_TOKEN");
         $recordId = $User->zr_id;
-        $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL></row></Candidates>';
+        $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL><FL val="Date de naissance">'.$birthDate.'</FL><FL val="Zip Code">'.$request->code_postal.'</FL><FL val="City">'.$request->city.'</FL><FL val="Country">'.$request->pays.'</FL><FL val="Country">'.$request->pays.'</FL></row></Candidates>';
         $finalXml = urlencode($updateXml);
 
         $updateUrl = "https://recruit.zoho.eu/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
@@ -138,7 +139,12 @@ class UserInfoController extends Controller
         $id = Auth::user()->id;
         $userInfo = User::find($id);
         
-        return view('userInfoPage.step2', ['data'=>$userInfo]);
+        $jobTitles = JobTitle::get();
+        
+        return view('userInfoPage.step2', [
+            'data'=>$userInfo,
+            'job_titles'=>$jobTitles
+        ]);
     }
 
     public function step2Update (UserInfoRequest2 $request)
@@ -175,6 +181,18 @@ class UserInfoController extends Controller
         $User->lang_22 = $request->lang_22;
 
         $User->save();
+
+        $jobTitlesArr = JobTitle::find($request->job_title);
+        $jobTitle = $jobTitlesArr->job_title;
+
+        // update record in zoho recruit
+        $token = env("ZOHO_ACCESS_TOKEN");
+        $recordId = $User->zr_id;
+        $updateXml = '<Candidates><row no="1"><FL val="Niveau de formation">'.$request->level_of_education.'</FL><FL val="Intitulé de poste">'.$jobTitle.'</FL><FL val="Langue 1">'.$request->lang_11.'</FL></row></Candidates>';
+        $finalXml = urlencode($updateXml);
+
+        $updateUrl = "https://recruit.zoho.eu/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
+        $res = $this->request($updateUrl,"POST");
 
         return redirect()->route('jobs');
     }

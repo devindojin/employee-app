@@ -89,7 +89,11 @@ $lph_To_mo = $lph_To_yr = "";
         </div>
         <div class="form-group">
           <label for="job_title">Intitulé de poste:</label>
-          <input type="text" class="form-control input-lg" id="job_title" name="job_title" value="{{ old('job_title', $data->job_title) }}">
+          <select class="form-control input-lg classic" id="job_title" name="job_title">
+            @foreach($job_titles as $job_title)
+              <option value="{{ $job_title->id }}" @if(old("job_title",$data->job_title) == $job_title->id) selected="selected" @else @endif>{{ $job_title->job_title }}</option>
+            @endforeach
+          </select>
         </div>
         <div class="form-group">
           <label for="fonction">Fonction:</label>
@@ -123,10 +127,14 @@ $lph_To_mo = $lph_To_yr = "";
         <div class="form-group">
           <label for="level_of_education">Niveau de formation</label>
           <select class="form-control input-lg classic" id="level_of_education" name="level_of_education">
-            <option value="1" @if(old("level_of_education",$data->level_of_education) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("level_of_education",$data->level_of_education) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("level_of_education",$data->level_of_education) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("level_of_education",$data->level_of_education) == "4") selected="selected" @else @endif>4</option>
+            <option value="Aucune" @if(old("level_of_education",$data->level_of_education) == "Aucune") selected="selected" @else @endif>Aucune</option>
+            <option value="> Bac" @if(old("level_of_education",$data->level_of_education) == "> Bac") selected="selected" @else @endif>&#62; Bac</option>
+            <option value="Bac +1" @if(old("level_of_education",$data->level_of_education) == "Bac +1") selected="selected" @else @endif>Bac +1</option>
+            <option value="Bac +2" @if(old("level_of_education",$data->level_of_education) == "Bac +2") selected="selected" @else @endif>Bac +2</option>
+            <option value="Bac +3" @if(old("level_of_education",$data->level_of_education) == "Bac +3") selected="selected" @else @endif>Bac +3</option>
+            <option value="Bac +4" @if(old("level_of_education",$data->level_of_education) == "Bac +4") selected="selected" @else @endif>Bac +4</option>
+            <option value="Bac +5" @if(old("level_of_education",$data->level_of_education) == "Bac +5") selected="selected" @else @endif>Bac +5</option>
+            <option value="Bac +6 et plus" @if(old("level_of_education",$data->level_of_education) == "Bac +6 et plus") selected="selected" @else @endif>Bac +6 et plus</option>
           </select>
         </div>
         <div class="form-group">
