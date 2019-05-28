@@ -125,7 +125,7 @@ class UserInfoController extends Controller
         // update record in zoho recruit
         $token = env("ZOHO_ACCESS_TOKEN");
         $recordId = $User->zr_id;
-        $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL><FL val="Date de naissance">'.$birthDate.'</FL><FL val="Zip Code">'.$request->code_postal.'</FL><FL val="City">'.$request->city.'</FL><FL val="Country">'.$request->pays.'</FL><FL val="Country">'.$request->pays.'</FL></row></Candidates>';
+        $updateXml = '<Candidates><row no="1"><FL val="First Name">'.$request->first_name.'</FL><FL val="Last Name">'.$request->last_name.'</FL><FL val="Date de naissance">'.$birthDate.'</FL><FL val="Zip Code">'.$request->code_postal.'</FL><FL val="City">'.$request->city.'</FL><FL val="Country">'.$request->pays.'</FL><FL val="Country">'.$request->pays.'</FL><FL val="Current Salary">'.$request->annual_salary.'</FL></row></Candidates>';
         $finalXml = urlencode($updateXml);
 
         $updateUrl = "https://recruit.zoho.eu/recruit/private/xml/Candidates/updateRecords?newFormat=1&authtoken=$token&scope=recruitapi&xmlData=$finalXml&id=$recordId&version=2";
