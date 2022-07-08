@@ -3,54 +3,42 @@
 @section('title', 'Home')
 
 @section('content')
-
-<div class="col-xs-12 header-section">
-<p>Le spécialiste du recrutement paysager</p>
-</div>
-<div class="col-xs-12 margin-top-20">
-    <div class="action_block text-center">
-    @guest
-      <a class="btn hm-btn" href="{{ route('login') }}">Espace Candidat</a>
-    @else
-        <a class="btn hm-btn" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-            Deconnexion
-        </a>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+<div class="col-xs-12">
+    <div class="login_wrapper">
+        <form method="POST" action="{{ route('login') }}" class="form-signin">
             @csrf
+            <h3 class="title">Vous êtes déjà membre?</h3>
+            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Votre email">
+            @if ($errors->has('email'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+            @endif
+            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Votre mot de passe">
+            @if ($errors->has('password'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+            @endif
+            <div class="display_flex other_option">   
+                <label class="checkbox ">
+                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    Rester connecté(e)
+                </label>
+                <label class="checkbox">
+                    @if (Route::has('password.request'))
+                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                            Mot de passe oublié?
+                        </a>
+                    @endif
+                </label>
+            </div>
+            <button type="submit" class="btn btn-lg btn-default">
+                Je me connecte
+            </button>
+            <h4 class="title">vous êtes nouveau?<br>Accédez a tous nos services</h4>
+            <a href="{{ route('register') }}" class="btn btn-lg btn-default">Je m'inscris</a>
         </form>
-    @endguest
     </div>
-</div>
-<div class="col-xs-12 margin-top-20">
-    <div class="action_block text-center">
-      <a class="btn hm-btn" href="">Espace Recruteur</a>
-    </div>
-</div>
-
-<div class="col-xs-12">
-    <p class="home-heading">N'attendez plus pour changer d'emploi!</p>
-    
-    <div class="action_block text-center">
-      <a class="btn hm-btn" href="">Postulez aux offres</a>
-    </div>
-</div>
-
-<div class="col-xs-12">
-    <p class="home-heading">
-        Le site dédié  aux metiers du paysage
-    </p>
-
-    <p>
-        Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum 
-    </p>
-</div>
-
-<div class="col-xs-12 margin-top-20">
-    <div class="col-xs-3"><p><b>2.2K</b><br>Shares</p></div>
-    <div class="col-xs-3 hm-fb"></div>
-    <div class="col-xs-3 hm-lkin"></div>
-    <div class="col-xs-3 hm-plus"></div>
 </div>
 @endsection

@@ -21,15 +21,11 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/user-info/upload-cv','UserInfoController@uploadCv')->name('upload-cv');
 
-	Route::post('/user-info/upload-cv','UserInfoController@saveCv')->name('save-cv');
+	Route::post('/moncv','UserInfoController@saveCv')->name('save-cv');
 
 	Route::get('/user-info/step1', 'UserInfoController@step1')->name('step1');
 
 	Route::post('/user-info/step1', 'UserInfoController@step1Update')->name('step1Update');
-
-	Route::get('/user-info/step2', 'UserInfoController@step2')->name('step2');
-
-	Route::post('/user-info/step2', 'UserInfoController@step2Update')->name('step2Update');
 
 	Route::get('/moncv','PageController@moncv')->name('moncv');
 
@@ -63,3 +59,7 @@ Route::get('/jobs/{from?}/{to?}/{cat?}/{loc?}','JobController@jobs')->name('jobs
 Route::get('/job/{id}/{action?}','JobController@job')->name('job');
 
 Route::post('/job/{id}','JobController@applyJob')->name('apply-job');
+
+Route::get('/annoncestest', function () {
+    return view('annoncestest');
+});

@@ -32,7 +32,7 @@ $lph_To_mo = $lph_To_yr = "";
 <h2 class="heading">Mon CV</h2>
 <p class="default_text">Bravo!<br>Encore un dernier effort et nous y sommes</p>
 </div>
-<div class="col-xs-12">
+<div class="col-xs-12 job-section">
   <form action="" method="POST">
     {{csrf_field()}}
     @include('partials.validation')
@@ -44,10 +44,13 @@ $lph_To_mo = $lph_To_yr = "";
         <div class="form-group">
           <label for="experience">Expérience:</label>
           <select class="form-control input-lg classic" name="experience">
-            <option value="1" @if(old("experience",$data->experience) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("experience",$data->experience) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("experience",$data->experience) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("experience",$data->experience) == "4") selected="selected" @else @endif>4</option>
+            <option value="Jeune diplômé" @if(old("experience",$data->experience) == "Jeune diplômé") selected="selected" @else @endif>Jeune diplômé</option>
+            <option value="1-2 ans" @if(old("experience",$data->experience) == "1-2 ans") selected="selected" @else @endif>1-2 ans</option>
+            <option value="3-5 ans" @if(old("experience",$data->experience) == "3-5 ans") selected="selected" @else @endif>3-5 ans</option>
+            <option value="6-10 ans" @if(old("experience",$data->experience) == "6-10 ans") selected="selected" @else @endif>6-10 ans</option>
+            <option value="11-20 ans" @if(old("experience",$data->experience) == "11-20 ans") selected="selected" @else @endif>11-20 ans</option>
+            <option value="+ de 20 ans" @if(old("experience",$data->experience) == "2") selected="selected" @else @endif>2</option>
+            <option value="3" @if(old("experience",$data->experience) == "+ de 20 ans") selected="selected" @else @endif>+ de 20 ans</option>
           </select>
         </div>
       </div>
@@ -89,28 +92,15 @@ $lph_To_mo = $lph_To_yr = "";
         </div>
         <div class="form-group">
           <label for="job_title">Intitulé de poste:</label>
-          <select class="form-control input-lg classic" id="job_title" name="job_title">
-            @foreach($job_titles as $job_title)
-              <option value="{{ $job_title->id }}" @if(old("job_title",$data->job_title) == $job_title->id) selected="selected" @else @endif>{{ $job_title->job_title }}</option>
-            @endforeach
-          </select>
+          <input type="text" class="form-control input-lg" id="job_title" name="job_title" value="{{ old('job_title', $data->job_title) }}">
         </div>
         <div class="form-group">
           <label for="fonction">Fonction:</label>
-          <select class="form-control input-lg classic" id="fonction" name="fonction">
-            <option value="1" @if(old("fonction",$data->fonction) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("fonction",$data->fonction) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("fonction",$data->fonction) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("fonction",$data->fonction) == "4") selected="selected" @else @endif>4</option>
-          </select>
+            <input type="text" class="form-control input-lg" id="fonction" name="fonction" value="{{ old('fonction', $data->fonction) }}">
         </div>
         <div class="form-group">
           <label for="gross_annual_salary">Salaire annuel brut pour ce poste:</label>
-          <select class="form-control input-lg classic" id="gross_annual_salary" name="gross_annual_salary">
-            <option value="1" @if(old("gross_annual_salary",$data->gross_annual_salary) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("gross_annual_salary",$data->gross_annual_salary) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("gross_annual_salary",$data->gross_annual_salary) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("gross_annual_salary",$data->gross_annual_salary) == "4") selected="selected" @else @endif>4</option>
+          <input type="text" class="form-control input-lg" id="gross_annual_salary" name="gross_annual_salary" value="{{ old('gross_annual_salary', $data->gross_annual_salary) }}">
           </select>
         </div>
         <div class="form-group">
@@ -127,56 +117,33 @@ $lph_To_mo = $lph_To_yr = "";
         <div class="form-group">
           <label for="level_of_education">Niveau de formation</label>
           <select class="form-control input-lg classic" id="level_of_education" name="level_of_education">
-            <option value="Aucune" @if(old("level_of_education",$data->level_of_education) == "Aucune") selected="selected" @else @endif>Aucune</option>
-            <option value="> Bac" @if(old("level_of_education",$data->level_of_education) == "> Bac") selected="selected" @else @endif>&#62; Bac</option>
-            <option value="Bac +1" @if(old("level_of_education",$data->level_of_education) == "Bac +1") selected="selected" @else @endif>Bac +1</option>
-            <option value="Bac +2" @if(old("level_of_education",$data->level_of_education) == "Bac +2") selected="selected" @else @endif>Bac +2</option>
-            <option value="Bac +3" @if(old("level_of_education",$data->level_of_education) == "Bac +3") selected="selected" @else @endif>Bac +3</option>
-            <option value="Bac +4" @if(old("level_of_education",$data->level_of_education) == "Bac +4") selected="selected" @else @endif>Bac +4</option>
-            <option value="Bac +5" @if(old("level_of_education",$data->level_of_education) == "Bac +5") selected="selected" @else @endif>Bac +5</option>
-            <option value="Bac +6 et plus" @if(old("level_of_education",$data->level_of_education) == "Bac +6 et plus") selected="selected" @else @endif>Bac +6 et plus</option>
+            <option value="BAC" @if(old("level_of_education",$data->level_of_education) == "BAC") selected="selected" @else @endif>BAC</option>
+            <option value="BAC+1" @if(old("level_of_education",$data->level_of_education) == "BAC+1") selected="selected" @else @endif>BAC+1</option>
+            <option value="BAC+2" @if(old("level_of_education",$data->level_of_education) == "BAC+2") selected="selected" @else @endif>BAC+2</option>
+            <option value="BAC+3" @if(old("level_of_education",$data->level_of_education) == "BAC+3") selected="selected" @else @endif>BAC+3</option>
+            <option value="BAC+4" @if(old("level_of_education",$data->level_of_education) == "BAC+4") selected="selected" @else @endif>BAC+4</option>
+            <option value="BAC+5" @if(old("level_of_education",$data->level_of_education) == "BAC+5") selected="selected" @else @endif>BAC+5</option>
+            <option value="BAC+6" @if(old("level_of_education",$data->level_of_education) == "BAC+6") selected="selected" @else @endif>BAC+6</option>
+            <option value="BAC+6 et plus" @if(old("level_of_education",$data->level_of_education) == "BAC+6 et plus") selected="selected" @else @endif>BAC+6 et plus</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="training_type">Type de formation (facultaif)</label>
+          <label for="training_type">Type de formation (facultatif)</label>
           <select class="form-control input-lg classic" id="training_type" name="training_type">
-            <option value="1" @if(old("training_type",$data->training_type) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("training_type",$data->training_type) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("training_type",$data->training_type) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("training_type",$data->training_type) == "4") selected="selected" @else @endif>4</option>
+            <option value="Ecole de Paysage" @if(old("training_type",$data->training_type) == "Ecole de Paysage") selected="selected" @else @endif>Ecole de Paysage</option>
+            <option value="IEP" @if(old("training_type",$data->training_type) == "IEP") selected="selected" @else @endif>IEP</option>
+            <option value="IUT" @if(old("training_type",$data->training_type) == "IUT") selected="selected" @else @endif>IUT</option>
+            <option value="IUP" @if(old("training_type",$data->training_type) == "IUP") selected="selected" @else @endif>IUP</option>
+            <option value="BTS" @if(old("training_type",$data->training_type) == "BTS") selected="selected" @else @endif>BTS</option>
+            <option value="Université" @if(old("training_type",$data->training_type) == "Université") selected="selected" @else @endif>Université</option>
+            <option value="BAC" @if(old("training_type",$data->training_type) == "BAC") selected="selected" @else @endif>BAC</option>
+            <option value="Bac Pro, BEP, CAP" @if(old("training_type",$data->training_type) == "Bac Pro, BEP, CAP") selected="selected" @else @endif>Bac Pro, BEP, CAP</option>
+            <option value="Autre" @if(old("training_type",$data->training_type) == "Autre") selected="selected" @else @endif>Autre</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="mobility">1 ére langue (facultaif)</label>
-          <select class="form-control input-lg classic" id="lang_11" name="lang_11">
-            <option value="1" @if(old("lang_11",$data->lang_11) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("lang_11",$data->lang_11) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("lang_11",$data->lang_11) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("lang_11",$data->lang_11) == "4") selected="selected" @else @endif>4</option>
-          </select>
-          <br>
-          <select class="form-control input-lg classic" id="lang_12" name="lang_12">
-            <option value="1" @if(old("lang_12",$data->lang_12) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("lang_12",$data->lang_12) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("lang_12",$data->lang_12) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("lang_12",$data->lang_12) == "4") selected="selected" @else @endif>4</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="mobility">2 éme langue (facultaif)</label>
-          <select class="form-control input-lg classic" id="lang_21" name="lang_21">
-            <option value="1" @if(old("lang_21",$data->lang_21) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("lang_21",$data->lang_21) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("lang_21",$data->lang_21) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("lang_21",$data->lang_21) == "4") selected="selected" @else @endif>4</option>
-          </select>
-          <br>
-          <select class="form-control input-lg classic" id="lang_22" name="lang_22">
-            <option value="1" @if(old("lang_22",$data->lang_22) == "1") selected="selected" @else @endif>1</option>
-            <option value="2" @if(old("lang_22",$data->lang_22) == "2") selected="selected" @else @endif>2</option>
-            <option value="3" @if(old("lang_22",$data->lang_22) == "3") selected="selected" @else @endif>3</option>
-            <option value="4" @if(old("lang_22",$data->lang_22) == "4") selected="selected" @else @endif>4</option>
-          </select>
+          <label for="mobility">Langues (Facultatif)</label>
+          <input type="text" class="form-control input-lg" id="lang_11" name="lang_11" value="{{ old('lang_11', $data->lang_11) }}">
         </div>
       </div>
     </div>

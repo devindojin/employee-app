@@ -28,7 +28,7 @@ class LoginController extends Controller
             return redirect()->route('jobs');
         }
 
-        return redirect()->route('upload-cv');
+        return redirect()->route('moncv');
     }
 
     /**
@@ -36,7 +36,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/user-info/upload-cv';
+    protected $redirectTo = '/user-info/moncv';
 
     /**
      * Create a new controller instance.

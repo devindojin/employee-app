@@ -2,7 +2,8 @@
 
 body {
   padding-top: 0;
-  font-family:  'Open Sans', sans-serif !important;
+  font-family: proxima-nova;
+  font-style: normal;
 } 
 
 a:hover{
@@ -54,7 +55,7 @@ p.home-heading {
 }
 
 .layout {
-  max-width: 768px;
+  max-width: 1080px;
   width: 100%;
   margin: auto;
 }
@@ -89,12 +90,11 @@ p.default_text {
 }
 
 .top_bar {
-  height: 60px;
   padding: 0 15px;
-  display: flex;
   align-items: center;
   justify-content: space-between;
 	margin-bottom: 10px;
+  text-align:center;
 }
 
 .classic{
@@ -187,7 +187,7 @@ select.classic {
   height: 45px;
   min-width: 250px;
   font-size: 20px;
-  background: #888;
+  background: #727b6b;
   color: #fff;
   border: 0;
   border-radius: 0;
@@ -198,7 +198,7 @@ select.classic {
   height: 45px;
   min-width: 250px;
   font-size: 20px;
-  background: #888;
+  background: #727b6b;
   color: #fff;
   border: 0;
   border-radius: 0;
@@ -404,7 +404,22 @@ select.classic {
 }
 .menu_list li{ }
 .menu_list li a{
-  color: #666;
+  color: #35693a;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 0;
+  display: block;
+  text-transform:uppercase;
+}
+
+.menu_listxs{
+  margin: 0;
+  padding: 5px 0;
+}
+
+.menu_listxs li{ }
+.menu_listxs li a{
+  color: #35693a;
   font-weight: 700;
   font-size: 18px;
   padding: 10px 0;
@@ -437,7 +452,7 @@ select.classic {
 }
 p.notes {
   margin: 0;
-  background: #777;
+  background: #727b6b;
   color: #fff;
   padding: 10px 15px;
   font-weight: 400;
@@ -456,7 +471,7 @@ p.notes {
   padding: 0 20px;
 }
 .form-signin .btn.btn-lg.btn-default {
-  background: #435f52;
+  background: #727b6b;
   color: #fff;
   border-radius: 0;
   max-width: 350px;
@@ -521,8 +536,7 @@ p.notes {
 
 .search-no {
   padding: 20px 20px 20px 20px;
-  background-color: #eee;
-  text-align: left;
+  text-align: center;
   color: #999;
 }
 
@@ -539,6 +553,7 @@ p.notes {
   background-color: #FFF;
   margin: 0px 0px 20px 0px;
   padding: 15px;
+  box-shadow: 2px 2px 16px 6px hsla(0,0%,92.5%,.5);
 }
 
 .jss-sub-section a {
@@ -571,19 +586,19 @@ p.notes {
 }
 
 .job-section {
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 20px;
-  margin-top: 10px;
+  margin-top: 15px;
+  box-shadow: 2px 2px 16px 6px hsla(0,0%,92.5%,.5);
 }
 
 .heading1 {
-  font-size: 25px;
-  font-weight: 700
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .heading2 {
-  font-size: 25px;
+  font-size: 15px;
 }
 
 .job-page .btn {
@@ -592,11 +607,29 @@ p.notes {
   height: 64px;
   min-width: 250px;
   font-size: 20px;
-  background: #888;
+  background: #727b6b;
   color: #fff;
   border: 0;
   border-radius: 10px;
 }
+
+.btnpostulation {
+  text-align:center;
+  margin-top:10px;
+}
+
+.btnloggedoff {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  height: 64px;
+  min-width: 250px;
+  font-size: 20px;
+  background: #727b6b;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+}
+
 
 .job-section .favourite {
   background: none;
@@ -620,6 +653,7 @@ p.notes {
   border-radius: 0;
   border: 1px solid #ccc;
 }
+
 /*********job search section*********/
 
 /*********notificaiton page*********/
@@ -658,3 +692,61 @@ p.notes {
  }
   
  /*********RESPONSIVE LAYOUT END**************/
+
+/****** ALGOLIA CSS *******/
+
+.ais-search-box>input {
+    height: 50px;
+    border-radius: 11px;
+    width: 100%;
+    border: 1px solid #b5b5b5;
+    padding-left: 20px;
+    font-size: 15px;
+}
+.ais-header {
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #35693a;
+  color:#35693a;
+}
+.ais-refinement-list--count {
+  display: none;
+}
+.ais-refinement-list--item{
+  text-transform: capitalize;
+}
+
+.card-mb-2 {
+    background-color: #FFF;
+    margin: 0px 0px 20px 0px;
+    padding: 15px;
+    box-shadow: 2px 2px 16px 6px hsla(0,0%,92.5%,.5);
+}
+
+.card-mb-2 a:link, .card-mb-2 a:visited {
+    text-decoration:none;
+  color:#000000;
+}
+
+.titlecard {
+
+  padding: 10px 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #022B4C;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.bottomspace {
+  padding-bottom:25px;
+}
+
+.ais-refinement-list--checkbox {
+  margin-right:5px !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -4,48 +4,46 @@
 
 @section('content')
 
-<div class="col-xs-12">
-        <form method="POST" action="" class="job-search-section">
-            @csrf
-            @include('jobs.partials.jobCatDropdown',['class'=> 'selectCat'])
-        </form>
-        <div class="job-search-section">
-        	<div class="search-no">{{count($data)}} offres d'emploi</div>
-        	@if(count($data) > 0)
-        	@foreach ($data as $result)
-        	<div class="jss-sub-section">
-	        	<a href="{{ route('job',['id'=> $result['jobopeningid']]) }}">
-		        	<div>
-		        		<p class="heading1">
-		        		{{ isset($result['posting_title'])?$result['posting_title']:'-' }}</p>
-		        		<p class="heading2">(H/F)*</p>
-		        		<p class="heading1">
-		        		{{ isset($result['client_name'])?$result['client_name']:'-' }}</p>
-		        	</div>
-	        	</a>
-	        	<div class="jss-section3">
-	        		<a href="">
-	        			<i class="fas fa-briefcase"></i> 
-	        			{{ isset($result['job_type'])?$result['job_type']:'-' }}
-	        		</a>
-	        		<a href="">
-	        			<i class="fa fa-map-marker"></i> 
-	        			{{ isset($result['industry'])?$result['industry']:'-' }}
-	        		</a>
-	        		<a href="">
-	        			<i class="material-icons" style="font-size:14px">&#xe334;</i> 
-	        			{{ isset($result['date_opened'])?$result['date_opened']:'-' }}
-	        		</a>
-	        	</div>
-	        </div>
-	        @endforeach
-	        <div>
-	        	<a class="next-btn" href="{{ route('jobs', ['from'=>$from, 'to'=>$to, 'cat'=>$cat]) }}">Suivant</a>
-	        </div>
-	        @else
+@include('partials.success')
 
-	        @endif
+              <div>
+                  <main class="row">
+                                          <div class="col-lg-3 hidden-xs">
+                          <div id="JobCategory" class="facet"></div>
+                          <div id="lieu" class="facet"></div>
+                          <div id="Contrat" class="facet"></div>
+                      </div>
+                                          <div class="col-lg-9">
+                        <div class="row">
+                          <div id="search-input" class="col-lg-12 bottomspace"></div>
+                          <div id="stats" class="col-lg-10 bottomspace"></div>
+                        </div>
+                          <div id="hits" class="row bottomspace"></div>
+                      </div>
+              </div>
+
+
+        <!-- Hit template Algolia -->
+        <script type="text/html" id="hits-template">
+                  <div class="card-mb-2"><a target="_blank" href="@{{url}}">
+                        <div class="card-body">
+                          <h5 class="heading1">@{{titre}} - @{{entreprise}} </h5>
+                          <p class="card-text" style="padding: 10px 0;color: #35693a;">
+                              <i class="fa fa-map-marker"></i> @{{lieu}}  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  <i class="far fa-clock"></i> @{{date}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;   <i class="fas fa-briefcase"></i> @{{contrat}} </p>
+                          <p class="card-text"> VOIR L'OFFRE </p>
+                        </div>
+                      </a>
+                </div>
+       </script>
+       <!-- stat template Algolia -->
+        <script type="text/html" id="stats-template">
+            <div data-reactroot="" class="ais-root ais-stats">
+            <div class="ais-body ais-stats--body">
+            </div>
         </div>
-</div>
+    </script>
+        <hr>
+        </main>
+    </header>
 
 @endsection

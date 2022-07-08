@@ -9,7 +9,7 @@
 </div>
 
 @include('partials.success')
-<div class="col-xs-12 well well-lg custom_well">
+<div class="col-xs-12 job-section">
 	<div class="col-xs-12 job-app-sec1">
     	<div class="col-xs-6">
 	        <p><b>Titre du poste</b></p>

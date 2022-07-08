@@ -56,18 +56,22 @@ class JobController extends Controller
 
 
         $cols = urlencode("Posting Title,Client Name,Job Type,Industry,Date Opened");
+        $sortFieldStr = urlencode("Date Opened");
 
         if(isset($request->cat) && $request->cat != "") {
             $cat = $request->cat;
-            $con = urlencode("Industry|=|$cat");
+            $con = urlencode("Catégorie métiers|=|$cat");
+            // $con2 = urlencode("Zip Code|=|75000");
             $searchStr = '&searchCondition=('.$con.')';
 
-            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getSearchRecords?authtoken=$token&scope=recruitapi&version=2&newFormat=1&selectColumns=JobOpenings($cols)$searchStr&fromIndex=$fromIndex&toIndex=$toIndex";
+            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getSearchRecords?authtoken=$token&scope=recruitapi&version=2&newFormat=1&selectColumns=JobOpenings($cols)$searchStr&fromIndex=$fromIndex&toIndex=$toIndex&sortColumnString=$sortFieldStr&sortOrderString=desc";
 
         } else {
             $cat = "";
+            $con = urlencode("Job Opening Status|=|En cours");
+            $searchStr = '&searchCondition=('.$con.')';
 
-            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getRecords?authtoken=$token&scope=recruitapi&fromIndex=$fromIndex&toIndex=$toIndex";
+            $getUrl = "https://recruit.zoho.eu/recruit/private/json/JobOpenings/getSearchRecords?authtoken=$token&scope=recruitapi&version=2&newFormat=1&selectColumns=JobOpenings($cols)$searchStr&fromIndex=$fromIndex&toIndex=$toIndex&sortColumnString=$sortFieldStr&sortOrderString=desc";
         }
 
         
@@ -141,7 +145,7 @@ class JobController extends Controller
 
         if($favApply) {
             $status = $this->favJobApply($request);
-            return redirect()->route('jobs-saved')->withSuccess($status);
+            return redirect()->route('jobs')->withSuccess($status);
         } else {
         		
             if (Auth::check()) {
@@ -150,11 +154,11 @@ class JobController extends Controller
                 $recruitId = Auth::user()->zr_id;
                 $this->createCoverLetter($request,$recruitId);
         		$this->applyJobInZoho($id,$jobId);
+                $this->zohoJobApply($request);
         	} else {
                 $this->applyJobAsNewUser($request);
         	}
             
-        	$this->zohoJobApply($request);
         	return redirect()->route('job', ['id'=>$jobId,'action'=>'applied']);
         }
     }
@@ -168,7 +172,7 @@ class JobController extends Controller
         ])->get();
 
         if(count($appJobs)>0) {
-            $status = "You already saved this job";
+            $status = "Vous avez déjà enregistré cette offre";
         } else {
             $favJobApp = new JobsApplied;
 
@@ -178,7 +182,7 @@ class JobController extends Controller
 
             $favJobApp->save();
 
-            $status = "You successfully saved this job";
+            $status = "Vous avez enregistré ce poste !";
         }
 
         return $status;
@@ -193,7 +197,7 @@ class JobController extends Controller
         ])->get();
 
         if(count($appJobs)>0) {
-            $status = "You already applied this job";
+            $status = "Vous avez déjà candidaté à ce poste !";
         } else {
             $favJobApp = new JobsApplied;
 
@@ -203,7 +207,7 @@ class JobController extends Controller
 
             $favJobApp->save();
 
-            $status = "You successfully applied this job";
+            $status = "Vous avez candidaté avec succès à ce poste ! ";
         }
     }
 
@@ -214,22 +218,24 @@ class JobController extends Controller
     		'last_name' => 'required|min:3|max:50',
     		'email' => 'required',
             'uploadCv' => 'required|file|max:1024|mimes:doc,docx,pdf',
+            'cover_letter' => 'required'
         ]);
 
         $fileInfo = $this->uploadFile($request,"uploadCv");
+        $coverletter = $request->cover_letter;
         
-        $User = new User;
+        $UserArr = [];
 
-        $User->civility = $request->civility;
-        $User->name = $request->first_name;
-        $User->last_name = $request->last_name;
-        $User->email = $request->email;
-        $User->password = Hash::make("admin123");
-        $User->file_name = $fileInfo;
+        $UserArr['civility'] = $request->civility;
+        $UserArr['name'] = $request->first_name;
+        $UserArr['last_name'] = $request->last_name;
+        $UserArr['email'] = $request->email;
+        $UserArr['file_name'] = $fileInfo;
+        $UserArr['cover_letter'] = $coverletter;
 
-        $User->save();
-        Auth::login($User);
+
         $jobId = $request->id;
+        $User = (object)$UserArr;
 
         $this->addCandidateInfoInZoho($request,$User,$jobId);
     }
@@ -239,9 +245,10 @@ class JobController extends Controller
     	$token = env("ZOHO_ACCESS_TOKEN");
 
     	$fileInfo = $User->file_name;
-        $updateUser = User::find($User->id);
+        // $updateUser = User::find($User->id);
 
-        $insertXml = '<Candidates><row no="1"><FL val="First Name">'.$User->name.'</FL><FL val="Last Name">'.$User->last_name.'</FL><FL val="Email">'.$User->email.'</FL></row></Candidates>';
+        $insertXml = '<Candidates><row no="1"><FL val="First Name">'.$User->name.'</FL><FL val="Last Name">'.$User->last_name.'</FL><FL val="Email">'.$User->email.'</FL>
+        <FL val="Additional Info">'.$User->cover_letter.'</FL></row></Candidates>';
         
         $finalXml = urlencode($insertXml);
         
@@ -258,26 +265,21 @@ class JobController extends Controller
             $recordArr[$key] = $value->content;
         }
 
-        $updateUser->zr_id = $recordArr['id'];
-
-        $updateUser->save();
-
         // update cv
         $recruitId = $recordArr['id'];
         $file = public_path('storage/'.$fileInfo);
         $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=Resume&version=2";
 
         $req = $this->request($requestUrl,"FILE",array(),$recruitId,$file,"resume.pdf");
-
 		$this->createCoverLetter($request,$recruitId);
-		
-		$this->applyJobInZoho($User->id,$jobId);
+        
+		$this->applyJobInZoho($recruitId,$jobId);
     }
 
     public function createCoverLetter (Request $request,$recruitId)
     {
         $content = $request->cover_letter;
-        $fileName = Auth::user()->id.'_'.$request->id.'.txt';
+        $fileName = str_random(5).'_'.$request->id.'.txt';
         $uploadPath = storage_path('app/public/cover_letter'); 
         
         $filePath = $uploadPath.'/'.$fileName;
@@ -291,29 +293,32 @@ class JobController extends Controller
         fwrite($fp, $content);
         fclose($fp);
 
-        $token = env("ZOHO_ACCESS_TOKEN");
+        $token1 = env("ZOHO_ACCESS_TOKEN");
         $heading = urlencode("Cover Letter");
         
-        // $file = public_path('storage/app/public/cover_letter/'.$fileName);
-        $requestUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token&scope=recruitapi&type=$heading&version=2";
+        $file = public_path('storage/app/public/cover_letter/'.$fileName);
+        $requestUrl1 = "https://recruit.zoho.eu/recruit/private/json/Candidates/uploadFile?authtoken=$token1&scope=recruitapi&type=$heading&version=2";
 
-        $req = $this->request($requestUrl,"FILE",array(),$recruitId,$filePath,"cover_letter.txt");
+        $this->request($requestUrl1,"FILE",array(),$recruitId,$filePath,"cover_letter.txt");
 
     }
 
     public function applyJobInZoho ($id,$jobId)
     {
-    	$token = env("ZOHO_ACCESS_TOKEN");
+    	$token2 = env("ZOHO_ACCESS_TOKEN");
 
-        $User = User::findorFail($id);
+        if(Auth::check()) {
+            $User = User::findorFail($id);
 
-        $candidateId = $User->zr_id;
+            $candidateId = $User->zr_id;
+        } else {
+            $candidateId = $id;
+        }
+        
 
-    	
+    	$applyUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/associateJobOpening?authtoken=$token2&scope=recruitapi&jobIds=$jobId&candidateIds=$candidateId&candidateStatus=Associated&comments=PlacedinJavaDevelopment";
 
-    	$applyUrl = "https://recruit.zoho.eu/recruit/private/json/Candidates/associateJobOpening?authtoken=$token&scope=recruitapi&jobIds=$jobId&candidateIds=$candidateId&candidateStatus=Associated&comments=PlacedinJavaDevelopment";
-
-    	$res = $this->request($applyUrl,"POST");
+    	$this->request($applyUrl,"POST");
 	}
 
 

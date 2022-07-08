@@ -13,11 +13,18 @@ class LocalsTableSeeder extends Seeder
     {
         //
         DB::table('locals')->insert([
-            ['value' => 'Alsace'],
-            ['value' => 'Aquitaine'],
-            ['value' => 'Centre'],
-            ['value' => 'Corse'],
-            ['value' => 'Limousin']
+            ['value' => 'Auvergne-Rhône-Alpes'],
+            ['value' => 'Bourgogne-Franche-Comté'],
+            ['value' => 'Bretagne'],
+            ['value' => 'Centre-Val de Loire'],
+            ['value' => 'Grand Est'],
+            ['value' => 'Hauts-de-France'],
+            ['value' => 'Île-de-France'],
+            ['value' => 'Normandie'],
+            ['value' => 'Nouvelle-Aquitaine'],
+            ['value' => 'Occitanie'],
+            ['value' => 'Pays de la Loire'],
+            ['value' => 'Provence-Alpes-Côte d Azur']
         ]);
     }
 }

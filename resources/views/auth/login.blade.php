@@ -5,9 +5,9 @@
 @section('content')
 <div class="col-xs-12">
     <div class="login_wrapper">
-        <form method="POST" action="{{ route('login') }}" class="form-signin">
+        <form method="POST" action="{{ route('login') }}" class="form-signin job-section">
             @csrf
-            <h3 class="title">Vous êtes dêja membre?</h3>
+            <h3 class="title">Vous êtes déjà membre?</h3>
             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Votre email">
             @if ($errors->has('email'))
                 <span class="invalid-feedback" role="alert">
@@ -36,7 +36,7 @@
             <button type="submit" class="btn btn-lg btn-default">
                 Je me connecte
             </button>
-            <h4 class="title">vous êtes nouveau?<br>Accêdez a tous nos services</h4>
+            <h4 class="title">vous êtes nouveau?<br>Accédez a tous nos services</h4>
             <a href="{{ route('register') }}" class="btn btn-lg btn-default">Je m'inscris</a>
         </form>
     </div>
